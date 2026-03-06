@@ -776,87 +776,289 @@ const MODULES = [
     iconBg: '#1a2d1a',
     section: 'core-curriculum',
     hasReward: true,
-    lessons: [
+    isChallenge: true,
+    days: [
       {
-        id: 'CHALLENGE-000', title: 'Challenge Rules & Overview', level: 'Start', videoType: 'none',
-        hasTemplate: false, hasGuide: false, isOverview: true,
-        summary: '<p>Welcome to the 7-Day Claude Code Builder Challenge \u2014 7 days of hands-on building that takes you from your first AI-built workflow to self-healing production systems.</p><p>Every day you\'ll build something real with Claude Code + n8n. The difficulty ramps from beginner to advanced. Complete all 7 days and unlock exclusive rewards.</p>',
-        takeaways: ['One build per day for 7 consecutive days','Each day builds on skills from previous days \u2014 follow the order','Share your daily build in the community to stay accountable','Download the Progress Tracker to check off each day','Complete all 7 days to unlock challenge rewards'],
-        actions: ['Download the Progress Tracker spreadsheet','Read through the full 7-day outline so you know what\'s coming','Set aside 1-2 hours per day for the next 7 days','Introduce yourself in the community if you haven\'t already'],
-        resources: [{name: 'Challenge Progress Tracker', type: 'guide'}, {name: 'Challenge Rewards Preview', type: 'guide'}],
-        nextStep: 'Start Day 1: Setup & Your First AI-Built Workflow'
+        day: 0, title: 'Challenge HQ', icon: '\uD83C\uDFAF', color: '#6366f1',
+        subtitle: 'Everything you need before Day 1 \u2014 read this first',
+        sections: [
+          {
+            name: 'Welcome & Rules',
+            items: [
+              { id: 'CH-000a', title: 'Challenge Rules & How It Works', type: 'lesson', youtube: null, description: 'Here\'s the deal: 7 days, 7 builds, zero fluff. Each day has a Learn section (watch the videos, read the concepts), a Build section (the actual project you\'re constructing), and a Checkpoint (share your work, test your knowledge). Days 1\u20133 are beginner-friendly. Days 4\u20135 ramp to intermediate. Days 6\u20137 are advanced. You can go at your own pace, but the structure is designed to be completed in order. Skip ahead and you\'ll miss context that later days depend on. Every day takes roughly 1.5\u20133 hours depending on how deep you go into the bonus builds.' },
+              { id: 'CH-000b', title: 'Download Your Progress Tracker', type: 'resource', youtube: null, description: 'Open this Google Sheet and make a copy. It has checkboxes for every day, a dashboard that auto-calculates your completion percentage, and a reward eligibility tracker. As you finish each day\'s main build, check it off. When all 7 are checked, you\'ll see a "Ready to Claim" message in the rewards section. Keep this open throughout the challenge \u2014 it\'s your home base.' },
+              { id: 'CH-000c', title: 'Meet Your Fellow Builders', type: 'action', youtube: null, description: 'Drop a post in the community thread with three things: (1) your name and where you\'re from, (2) what you do right now (student, freelancer, employed, etc.), and (3) what you want to be able to build by Day 7. This isn\'t optional fluff \u2014 the people who introduce themselves are 3x more likely to finish the challenge. You\'ll also find accountability partners here. Tag your post with #ChallengeIntro.' },
+              { id: 'CH-000d', title: 'Prerequisites & Setup Checklist', type: 'lesson', youtube: null, description: 'Before Day 1, make sure you have: (1) A computer with terminal/command line access (Mac, Windows, or Linux all work). (2) Node.js installed (v18 or higher). (3) An Anthropic API key for Claude (free tier works for the challenge). (4) n8n installed locally or a cloud account (self-hosted or n8n.cloud). (5) A text editor (VS Code recommended). (6) A Gmail or Outlook account for the Day 2 email builds. Don\'t worry if you\'re missing something \u2014 Day 1 walks through the full setup.' }
+            ]
+          },
+          {
+            name: 'Rewards & Recognition',
+            items: [
+              { id: 'CH-000e', title: 'What You Unlock by Finishing', type: 'lesson', youtube: null, description: 'Complete all 7 days and submit proof via the Google Form, and here\'s what you get: (1) A public shoutout from Nate in the community. (2) Your name added to the permanent Hall of Builders page. (3) Exclusive partner discount codes for Airtop, Apify, Firecrawl, Hostinger, Lindy, and more \u2014 worth hundreds in savings. (4) A private AIS+ discount code that isn\'t available anywhere else. This isn\'t a participation trophy \u2014 you have to actually build the projects and show proof. But if you put in the work, the rewards are real.' },
+              { id: 'CH-000f', title: 'Hall of Builders', type: 'lesson', youtube: null, description: 'The Hall of Builders is a permanent recognition page inside the community. Every member who completes the full 7-day challenge gets listed with their name, completion date, and a link to their capstone project. It\'s social proof that you can build real AI systems \u2014 useful for freelance profiles, LinkedIn, and client conversations. Previous builders have used their Hall of Builders listing as a credibility signal when pitching clients.' }
+            ]
+          }
+        ]
       },
       {
-        id: 'CC-001', title: 'Day 1: Setup & Your First AI-Built Workflow', level: 'Beginner',
-        levelKey: 'beginner',
-        youtube: 'B6k_vAjndMo', hasTemplate: true, hasGuide: false,
-        tools: 'Claude Code, n8n',
-        summary: '<p>Day 1 is about getting set up and experiencing the power of building with AI. You\'ll install and configure Claude Code, connect it to n8n, and build your very first AI-generated workflow \u2014 entirely through natural language instructions.</p><p>By the end of today, you\'ll understand how Claude Code works as a development partner and have a working workflow deployed in n8n. This is the foundation everything else builds on.</p>',
-        takeaways: ['<strong>Claude Code</strong> acts as your AI development partner \u2014 describe what you want, and it builds the workflow','<strong>Natural language to workflow</strong> is the core skill: learn how to describe automations clearly','<strong>Setup once, build forever</strong> \u2014 today\'s configuration is reused every remaining day'],
-        actions: ['Install and configure Claude Code','Build your first AI-generated n8n workflow','Test the workflow end-to-end','Share your Day 1 build in the community'],
-        nextStep: 'Day 2: Build an AI Email Agent'
+        day: 1, title: 'Setup & First Build', icon: '\uD83D\uDD27', color: '#22c55e',
+        subtitle: 'Install everything and build your first AI-generated workflow from English',
+        sections: [
+          {
+            name: 'Learn',
+            items: [
+              { id: 'CC-001', title: 'Build n8n Flows with Claude Code', type: 'video', youtube: 'I8YO_UaL5Xw', description: 'This is your main video for Day 1. Nate walks through the entire process from scratch: installing Claude Code, configuring your API key, connecting the n8n MCP server, and generating your first complete workflow by describing it in plain English. By the end of this video you\'ll have a working n8n workflow that was built entirely by AI. Watch the full thing before you start building \u2014 it\'ll save you time when you do it yourself.' },
+              { id: 'CH-101', title: 'What is Claude Code? (And What It Isn\'t)', type: 'lesson', youtube: null, description: 'Claude Code is Anthropic\'s command-line AI coding assistant. Think of it as a developer that lives in your terminal \u2014 you describe what you want in English, and it writes the code, creates the files, runs the commands. But it\'s not magic. It works best when you give it clear, specific instructions. It can\'t read your mind, and it occasionally makes mistakes that you\'ll need to catch. The mental model that works: treat it like a very fast junior developer. You\'re the architect, it\'s the builder. Today is about learning how to communicate with it effectively.' },
+              { id: 'CH-102', title: 'How n8n + Claude Code Connect', type: 'lesson', youtube: null, description: 'The secret sauce is MCP (Model Context Protocol). Here\'s how it works: Claude Code connects to n8n through an MCP server, which gives Claude the ability to read your existing workflows, create new ones, modify nodes, and test connections \u2014 all programmatically. You tell Claude "build me a workflow that triggers on a webhook, sends the data to GPT-4, and posts the result to Slack" and it actually creates that workflow in your n8n instance. The MCP server is the bridge. This lesson explains the architecture so you understand what\'s happening under the hood when you give Claude a command.' }
+            ]
+          },
+          {
+            name: 'Build',
+            items: [
+              { id: 'CH-103', title: 'Project: Your First AI-Generated Workflow', type: 'build', youtube: null, description: 'Time to build. Open your terminal, launch Claude Code, and follow along. Your project: build a workflow that (1) triggers on a webhook, (2) takes incoming text data, (3) sends it to an AI model for processing, and (4) returns the result. This is the "hello world" of Claude Code + n8n. The point isn\'t the workflow itself \u2014 it\'s experiencing the loop: describe \u2192 generate \u2192 test \u2192 iterate. Once you feel this loop click, everything else in the challenge gets easier. Estimated time: 20\u201330 minutes.' },
+              { id: 'FT-071', title: 'Bonus Build: Weather Bot AI Agent', type: 'template', youtube: 'otUBuV1foLY', description: 'If you finished the main project and want more reps, build this weather bot. It\'s a simple AI agent that takes a city name, fetches real-time weather data from an API, and returns a natural language summary. It introduces you to the HTTP Request node, JSON parsing, and how Claude Code handles API integrations. The template is included \u2014 but try building it from scratch first using only Claude Code, then compare your version to the template.' }
+            ]
+          },
+          {
+            name: 'Reference',
+            items: [
+              { id: 'CH-104r', title: 'Claude Code Cheat Sheet', type: 'resource', youtube: null, description: 'A one-page reference of the most useful Claude Code commands and patterns you\'ll use throughout the challenge. Covers: how to start a session, how to give context about your project, how to ask for modifications, and the exact phrasing that produces the best results. Print this or keep it open in a tab. You\'ll reference it every day.' },
+              { id: 'CH-104s', title: 'Troubleshooting: Common Day 1 Issues', type: 'lesson', youtube: null, description: 'Stuck? Here are the most common Day 1 issues and fixes: (1) "Claude Code not found" \u2014 check your Node.js version and PATH. (2) "MCP connection failed" \u2014 make sure n8n is running before connecting. (3) "Workflow created but not working" \u2014 check that all credentials are configured in n8n, not just in Claude Code. (4) "API key invalid" \u2014 verify you\'re using the correct Anthropic key format. If you\'re still stuck, post in the community with the #Day1Help tag.' }
+            ]
+          },
+          {
+            name: 'Checkpoint',
+            items: [
+              { id: 'CH-105', title: 'Day 1 Knowledge Check', type: 'quiz', youtube: null, description: 'Five quick questions before you move on: (1) What does MCP stand for and what does it do? (2) What\'s the difference between Claude Code generating a workflow vs. you building one manually? (3) If Claude Code produces a workflow with an error, what should you do? (4) What command starts a Claude Code session? (5) Why should you describe the desired output before describing the steps? Answers are in the expandable section below each question.' },
+              { id: 'CH-106', title: 'Share Your Day 1 Build', type: 'action', youtube: null, description: 'Post a screenshot of your working workflow in the community. Include: (1) a screenshot of the n8n canvas showing your workflow, (2) 1\u20132 sentences about what it does, and (3) one thing that surprised you about using Claude Code. Tag it #Day1. This is how we keep each other accountable \u2014 and Nate personally reviews Day 1 posts to give feedback.' }
+            ]
+          }
+        ]
       },
       {
-        id: 'CC-001+FT-009', title: 'Day 2: Build an AI Email Agent', level: 'Beginner',
-        levelKey: 'beginner',
-        youtube: 'HN0oWxbM', hasTemplate: true, hasGuide: true,
-        tools: 'Claude Code, n8n, Gmail, OpenRouter, Claude/GPT',
-        summary: '<p>Day 2 combines Claude Code with a real business use case \u2014 email automation. You\'ll use Claude Code to build an AI-powered inbox agent that reads, classifies, and drafts responses to your emails automatically.</p><p>This introduces you to the pattern of using Claude Code to rapidly prototype automations that have immediate business value. Email is the #1 sellable use case in AI automation.</p>',
-        takeaways: ['<strong>Claude Code accelerates builds</strong> \u2014 what might take hours manually takes minutes with AI-assisted development','<strong>Email automation is the #1 sellable use case</strong> \u2014 nearly every business has email workflows to automate','<strong>AI classification + routing</strong> turns unstructured emails into structured, actionable workflows'],
-        actions: ['Use Claude Code to build the email agent','Test with at least 5 real emails from your inbox','Add a custom classification category','Share your Day 2 build in the community'],
-        nextStep: 'Day 3: Master the Claude Code Framework'
+        day: 2, title: 'AI Email & Inbox Agents', icon: '\uD83D\uDCE7', color: '#3b82f6',
+        subtitle: 'Build the #1 most-requested AI automation that businesses actually pay for',
+        sections: [
+          {
+            name: 'Learn',
+            items: [
+              { id: 'CH-201', title: 'Why Email Automation Is the Fastest Path to Revenue', type: 'lesson', youtube: null, description: 'Every single business uses email. Every. Single. One. And most of them are drowning in it. The average knowledge worker spends 28% of their workday on email \u2014 reading, sorting, replying, forwarding. An AI email agent that handles even 50% of that is worth thousands per year to a business. This is why email automation is the #1 use case that AIS+ members sell to clients. Today you\'re building the same system that members like Aidan Finnegan used to land a $14,000 contract. The skill is real, the demand is real, and after today you\'ll have a working version.' },
+              { id: 'FT-073', title: 'AI Email Agent \u2014 Full Walkthrough', type: 'video', youtube: 'YFrej2oSldo', description: 'Nate builds a complete AI email agent from scratch in this walkthrough. The system connects to Gmail, reads incoming emails, uses AI to classify them into categories (client inquiry, newsletter, internal, spam, urgent), drafts appropriate responses for each category, and queues them for your review before sending. Watch how Nate structures the prompts for classification \u2014 the way you define categories determines how well the agent performs. This is the core build for Day 2.' },
+              { id: 'CH-202', title: 'Classification Schemas & Routing Logic', type: 'lesson', youtube: null, description: 'The brain of any email agent is the classification step. Here\'s how to design one that actually works: Start with 4\u20136 broad categories (not 20). Define each category with 2\u20133 example emails. Add a "requires human review" catch-all for anything the AI isn\'t confident about. Then build routing logic: each category maps to a different action \u2014 auto-reply, forward to team member, archive, flag for urgent attention, etc. The common mistake is making categories too granular too early. Start broad, then refine based on real email data.' }
+            ]
+          },
+          {
+            name: 'Build',
+            items: [
+              { id: 'FT-009', title: 'Project: From Zero to Inbox Agent', type: 'template', youtube: 'HN0oWxbF2bM', description: 'Your main build for Day 2. Using Claude Code, construct a full inbox management system: (1) Gmail trigger that watches for new emails. (2) AI classification node that sorts into your defined categories. (3) Conditional routing based on classification. (4) Auto-draft responses for routine categories. (5) Slack/webhook notification for urgent items. The template is provided, but use Claude Code to build it step by step. Tell Claude what you want, let it generate each piece, test as you go. Estimated time: 45\u201360 minutes.' },
+              { id: 'FT-050', title: 'Alternate Build: Advanced Inbox Manager', type: 'template', youtube: 'x1tam0Fhymc', description: 'A different architectural approach to inbox management. This version uses a loop-based design that processes emails in batches rather than one at a time, which handles high-volume inboxes better. It also includes a priority scoring system \u2014 instead of just classifying emails, it assigns a 1\u201310 urgency score so you can filter by importance. Build this after the main project to see how different architecture choices affect performance.' },
+              { id: 'FT-061', title: 'Alternate Build: Email Manager with Multi-Step Processing', type: 'template', youtube: 'JUx2ZfNfD64', description: 'This version adds a multi-step processing pipeline: extract \u2192 classify \u2192 enrich \u2192 respond. The "enrich" step is the key difference \u2014 before drafting a response, the agent pulls in context from your CRM, previous email threads, and company knowledge base. This produces dramatically better responses because the AI has more context. More complex to build, but closer to what you\'d deliver for a paying client.' }
+            ]
+          },
+          {
+            name: 'Go Deeper',
+            items: [
+              { id: 'FT-048', title: 'Customer Support Agent', type: 'template', youtube: 'KIJHRq_Tg6o', description: 'Take your email classification skills and apply them to customer support. This template builds a full support system: incoming ticket classification, automatic routing to the right department, AI-generated first responses for common questions, and escalation rules for complex issues. If you\'re thinking about selling AI automation to businesses, customer support is the second most common use case after email. Build this to expand your portfolio.' },
+              { id: 'FT-065', title: 'Voice Email Agent', type: 'template', youtube: 'Je4EAscnKK0', description: 'What if you could talk to your email? This template adds ElevenLabs voice synthesis to your email agent. It reads your email summaries aloud, lets you dictate responses by voice, and converts speech to draft emails. It\'s a futuristic demo that impresses clients and also a genuinely useful tool for processing email on the go. Uses the same classification patterns from your main build but adds a voice interface layer on top.' }
+            ]
+          },
+          {
+            name: 'Checkpoint',
+            items: [
+              { id: 'CH-203', title: 'Day 2 Knowledge Check', type: 'quiz', youtube: null, description: 'Test your understanding: (1) Why should you start with 4\u20136 email categories instead of 20? (2) What\'s the difference between classification and routing? (3) When should an email agent NOT auto-respond? (4) How does the "requires human review" category prevent embarrassing auto-replies? (5) What makes email automation the #1 sellable use case? Answers in the expandable sections.' },
+              { id: 'CH-204', title: 'Share Your Day 2 Build', type: 'action', youtube: null, description: 'Post your inbox agent in the community with: (1) A screenshot of the workflow in n8n. (2) Your classification categories and why you chose them. (3) An example of an email it classified correctly. (4) One thing you\'d improve if you had more time. Tag #Day2. Bonus points if you show a before/after \u2014 how you used to handle email vs. how the agent handles it now.' }
+            ]
+          }
+        ]
       },
       {
-        id: 'CC-003', title: 'Day 3: Master the Claude Code Framework', level: 'Beginner+',
-        levelKey: 'beginner-plus',
-        youtube: 'saggDHHnmtQ', hasTemplate: true, hasGuide: true,
-        tools: 'Claude Code',
-        summary: '<p>Today is about mastering the tool itself. Instead of building one specific workflow, you\'ll learn the full Claude Code framework \u2014 the features, shortcuts, prompt patterns, and techniques that handle 95% of all use cases.</p><p>Think of this as learning your vocabulary before writing sentences. After today, you\'ll be dramatically faster and more effective with Claude Code for every remaining day of the challenge.</p>',
-        takeaways: ['<strong>Prompt patterns matter</strong> \u2014 specific techniques consistently produce better Claude Code output','<strong>Iterative building</strong> \u2014 start simple, then layer complexity in follow-up requests','<strong>Know the limits</strong> \u2014 understanding what Claude Code can and can\'t do makes you faster'],
-        actions: ['Complete the full Claude Code mastery walkthrough','Practice at least 3 different prompt patterns','Build a quick workflow using each technique','Save your notes \u2014 this is reference material for every future build'],
-        resources: [{name: 'Claude Code Reference Guide', type: 'guide'}],
-        nextStep: 'Day 4: From Workflow to Web App'
+        day: 3, title: 'Master the Framework', icon: '\uD83E\uDDE0', color: '#a855f7',
+        subtitle: 'The prompting techniques, mental models, and shortcuts that make everything else faster',
+        sections: [
+          {
+            name: 'Learn',
+            items: [
+              { id: 'CC-003', title: 'Master 95% of Claude Code', type: 'video', youtube: 'BVNhg1pCbeg', description: 'This is the most important reference video in the entire challenge. Nate covers every Claude Code feature you\'ll actually use: slash commands, context management, how to give Claude access to files and projects, how to chain multiple requests into complex builds, the CLAUDE.md project file that gives Claude persistent memory, and the specific prompt structures that produce the best output. You will come back to this video repeatedly. Watch it once now for the overview, then bookmark it \u2014 you\'ll reference specific sections on Days 4\u20137.' },
+              { id: 'CH-301', title: 'The WAT Framework: Workflow \u2192 Agent \u2192 Tool', type: 'lesson', youtube: null, description: 'Before you build anything, you need to decide WHAT to build. That\'s where WAT comes in. Workflow: a fixed sequence of steps (trigger \u2192 process \u2192 output). Use this when the logic is predictable. Agent: an AI that decides its own steps based on the input. Use this when you need flexibility. Tool: a reusable capability that agents or workflows can call. Use this for shared functions like "send email" or "query database." Every build in this challenge falls into one of these three patterns, or a combination. When you\'re stuck on how to structure something, ask: "Is this a Workflow, an Agent, or a Tool?" The answer tells you exactly how to architect it.' },
+              { id: 'CH-302', title: 'Prompt Engineering for Claude Code', type: 'lesson', youtube: null, description: 'Claude Code responds differently depending on how you talk to it. Here are the three core patterns that work: (1) Direct Generation: "Build an n8n workflow that does X, Y, Z." Best for simple, well-defined builds. (2) Iterative Building: "Start with a webhook trigger. Now add a GPT node. Now add error handling." Best for complex builds where you want control over each step. (3) Template-Based: "Here\'s my existing workflow JSON. Modify it to also do X." Best for extending existing work. The key insight: start with the simplest pattern that could work. You can always switch to iterative building if the direct approach produces something wrong. Trying to specify everything upfront is a common mistake \u2014 Claude Code actually performs better with shorter, clearer instructions.' },
+              { id: 'CH-303', title: 'MCP Servers, Skills Files & Project Memory', type: 'lesson', youtube: null, description: 'Three features that take your Claude Code usage from good to great: (1) MCP Servers extend Claude\'s abilities. The n8n MCP server lets Claude interact with your n8n instance. But there are MCP servers for databases, APIs, file systems, and more. Each one gives Claude new superpowers. (2) Skills files (.claude/skills/) are reusable prompt templates. Instead of explaining the same thing every time, you write it once as a skill file and Claude loads it automatically. We\'ll build skills on Days 4\u20137. (3) CLAUDE.md is your project memory file. Put project context, coding standards, and architecture notes here \u2014 Claude reads it at the start of every session. This means Claude "remembers" your project between conversations.' }
+            ]
+          },
+          {
+            name: 'Build',
+            items: [
+              { id: 'CH-304', title: 'Project: Three Workflows, Three Techniques', type: 'build', youtube: null, description: 'Today\'s build is about practicing the prompt patterns, not building one big thing. You\'re going to build three small workflows, each using a different technique: (1) Direct Generation \u2014 build a workflow that takes a URL, scrapes the page content, and summarizes it with AI. Give Claude one prompt and see what it produces. (2) Iterative Building \u2014 build a workflow that monitors an RSS feed, filters for relevant articles, and sends a daily digest email. Build it node by node with Claude. (3) Template Modification \u2014 take your Day 1 or Day 2 workflow and tell Claude to add three new features to it. Compare the experience of each technique. Which felt most natural? Which produced the best result? That\'s your default technique going forward.' },
+              { id: 'FT-003', title: 'Reference: The 17 Core n8n Nodes', type: 'template', youtube: 'D9MIGseFB3g', description: 'These 17 nodes handle 90% of everything you\'ll ever build in n8n: Webhook, HTTP Request, Set, IF, Switch, Code, Merge, Split In Batches, Wait, Gmail, Slack, Google Sheets, Postgres, AI Agent, AI Chain, Text Classifier, and Manual Trigger. This video walks through each one with real examples. Understanding these nodes is like learning vocabulary \u2014 the more nodes you know, the better you can describe what you want to Claude Code. When you say "split the data into batches and process each one," Claude knows exactly which node to use because you\'re speaking its language.' }
+            ]
+          },
+          {
+            name: 'Go Deeper',
+            items: [
+              { id: 'FT-020', title: 'Error Handling Patterns in n8n', type: 'template', youtube: 'Irk4-DO5qgM', description: 'Your workflows will break. It\'s not a matter of if, it\'s when. This template teaches you the three levels of error handling: (1) Node-level: try/catch on individual nodes so one failure doesn\'t crash the whole workflow. (2) Workflow-level: error trigger nodes that catch anything the node-level misses. (3) System-level: monitoring and alerting when workflows fail silently. After today, every workflow you build should include at least level 1 and 2. This is what separates hobby projects from production systems.' },
+              { id: 'FT-039', title: '25 n8n Power User Hacks', type: 'template', youtube: 'zMy5yoA-ub8', description: '25 tips and tricks that make your n8n builds faster and more reliable. Highlights: how to use expressions to dynamically set values, the "Sticky Note" trick for documenting workflows, how to use sub-workflows to keep things modular, the environment variable pattern for managing API keys, and the execution data trick for debugging. These aren\'t theoretical \u2014 they\'re the actual shortcuts that experienced n8n builders use daily. Pick 5 that seem useful and start using them in your builds.' },
+              { id: 'FT-025', title: 'Webhook Security', type: 'template', youtube: '3FfCRbq3XMs', description: 'If any of your workflows use webhooks (and most will), you need to secure them. An open webhook is an open door \u2014 anyone who finds the URL can trigger your workflow with whatever data they want. This template covers: authentication headers, IP allowlisting, payload validation, rate limiting, and HMAC signature verification. This is especially important for any workflow you deploy for a client or expose to the internet. Learn it now, apply it to everything you build going forward.' }
+            ]
+          },
+          {
+            name: 'Checkpoint',
+            items: [
+              { id: 'CH-305', title: 'Day 3 Knowledge Check', type: 'quiz', youtube: null, description: '(1) What are the three categories in the WAT framework and when do you use each? (2) What\'s the difference between Direct Generation and Iterative Building? When is each better? (3) What does a CLAUDE.md file do and why should every project have one? (4) Name three things an MCP server can give Claude Code access to. (5) Why is "start simple, then iterate" better than "specify everything upfront"? Answers in expandable sections.' },
+              { id: 'CH-306', title: 'Share Your Day 3 Builds', type: 'action', youtube: null, description: 'Post all three workflows you built today with: (1) Which prompt technique you used for each. (2) Which technique felt most natural to you. (3) A side-by-side comparison if any two builds overlapped. Tag #Day3. Today\'s share is especially valuable because you\'ll see how other builders approached the same prompting techniques differently \u2014 there\'s no single right answer.' }
+            ]
+          }
+        ]
       },
       {
-        id: 'CC-002', title: 'Day 4: From Workflow to Web App', level: 'Intermediate',
-        levelKey: 'intermediate',
-        youtube: 'OCO3aq3G0mk', hasTemplate: false, hasGuide: false,
-        tools: 'Claude Code, n8n, Web Technologies',
-        summary: '<p>Today you break out of the n8n canvas and build something users can interact with directly. Using Claude Code, you\'ll transform a workflow into a web application \u2014 complete with a frontend interface.</p><p>This is the "Build ANYTHING" lesson. You\'ll see how Claude Code can generate not just workflows, but full applications that combine n8n backends with user-facing frontends. This is where your builds start feeling like real products.</p>',
-        takeaways: ['<strong>Workflows can become products</strong> \u2014 adding a frontend makes your automation sellable as a standalone tool','<strong>Claude Code generates full apps</strong>, not just n8n flows \u2014 understand the full scope of what\'s possible','<strong>Client-ready output</strong> \u2014 a web interface turns an "automation" into a "solution" that clients pay premium for'],
-        actions: ['Build the full workflow-to-web-app project with Claude Code','Test the frontend end-to-end','Experiment with customizing the UI','Share your Day 4 build \u2014 screenshot the web app'],
-        nextStep: 'Day 5: Build a RAG Agent'
+        day: 4, title: 'From Workflows to Products', icon: '\uD83C\uDF10', color: '#f59e0b',
+        subtitle: 'Stop building automations in a vacuum \u2014 give them interfaces that users can actually use',
+        sections: [
+          {
+            name: 'Learn',
+            items: [
+              { id: 'CC-002', title: 'Build ANYTHING with n8n & Claude Code', type: 'video', youtube: 'TgiSxMBsdKE', description: 'This video is the moment the challenge shifts from "building workflows" to "building products." Nate shows how Claude Code can generate not just n8n workflows but complete web applications \u2014 frontend, backend, API connections, all of it. You\'ll see a real example of taking an n8n workflow and wrapping it in a user-friendly interface that a non-technical person could use. The key realization: a workflow is a backend. Adding a frontend turns it into something you can sell as a product, charge monthly for, or deliver to a client as a finished tool.' },
+              { id: 'CH-401', title: 'The Product Mindset: Why Interfaces Change Everything', type: 'lesson', youtube: null, description: 'A workflow that runs in n8n is useful. A workflow with a web interface that a client can interact with is worth 5\u201310x more. Here\'s why: (1) Clients can see and use it without learning n8n. (2) It feels like a "real product" instead of a "technical thing." (3) You can charge ongoing fees for access, not just a one-time build fee. (4) It demonstrates your skills at a level most n8n builders never reach. Today you\'re learning to think like a product builder, not just an automation builder. The technical difference is one frontend. The business difference is enormous.' },
+              { id: 'CH-402', title: 'How Claude Code Generates Frontends', type: 'lesson', youtube: null, description: 'Claude Code can generate complete web interfaces: HTML/CSS/JavaScript, React components, even full Next.js applications. Here\'s how to use it effectively for frontends: (1) Describe the user experience first, not the technical implementation. "A dashboard where users paste a URL and get a summary" is better than "a React app with an input field." (2) Tell Claude which framework to use (or let it choose). (3) Have Claude connect the frontend to your n8n webhook endpoints. The workflow handles the logic, the frontend handles the experience. You describe the what, Claude builds the how.' }
+            ]
+          },
+          {
+            name: 'Build',
+            items: [
+              { id: 'CH-403', title: 'Project: Turn Your Day 2 Workflow Into a Web App', type: 'build', youtube: null, description: 'Your main build today: take the email agent you built on Day 2 and give it a web interface. Using Claude Code, generate a dashboard that shows: (1) A live feed of classified emails with their categories and urgency scores. (2) A "Review & Approve" panel where you can approve or edit AI-drafted responses before they send. (3) A settings page where you can modify classification categories without touching n8n. Connect the frontend to your n8n workflows via webhooks. When you\'re done, you\'ll have a functional email management dashboard \u2014 the kind of tool businesses pay $200\u2013$500/month for. Estimated time: 60\u201390 minutes.' },
+              { id: 'FT-012', title: 'Alternate Build: Base44 Web Apps', type: 'template', youtube: 'tFFKuq2t0rI', description: 'Base44 is a no-code app builder that connects natively to n8n. If you\'re not comfortable with code-based frontends, this is a great alternative. This template walks through building a web application on Base44 that uses n8n workflows as the backend. The tradeoff: less customization than code, but much faster to deploy. Good for rapid prototyping or MVPs where you want to test an idea before investing in a custom frontend.' },
+              { id: 'FT-045', title: 'Bonus Build: JARVIS \u2014 Multi-Tool Personal Assistant', type: 'template', youtube: 'KUvSzvFeZls', description: 'Build the ultimate personal assistant: a web interface (inspired by Iron Man\'s JARVIS) that combines multiple n8n workflows behind a single conversational UI. Users type or speak a command, and JARVIS routes it to the right workflow \u2014 check calendar, draft an email, summarize a document, search the web. Built with n8n as the orchestration layer, ElevenLabs for voice, and Lovable for the frontend. This is a "wow factor" build that demonstrates what\'s possible when you combine everything from Days 1\u20134.' }
+            ]
+          },
+          {
+            name: 'Go Deeper',
+            items: [
+              { id: 'FT-049', title: 'AI Personal Assistant', type: 'template', youtube: 'ZP4fjVWKt2w', description: 'A step-by-step personal assistant build that manages your tasks, calendar, and communications through a single n8n workflow. This is a simpler version of JARVIS \u2014 focused on practical daily utility rather than flashy UI. Great for understanding the core orchestration pattern: one trigger, multiple tools, contextual routing.' },
+              { id: 'FT-059', title: 'Personal Assistant Architecture v2', type: 'template', youtube: 'omw1MEvMCo0', description: 'A redesigned personal assistant that uses a different architecture: instead of one big workflow, it uses a hub-and-spoke model where a central orchestrator workflow delegates to specialized sub-workflows. Compare this to FT-049 to understand when monolithic vs. modular architecture is the right choice. Spoiler: modular almost always wins for anything beyond simple demos.' },
+              { id: 'FT-060', title: 'Personal Assistant 2.0 \u2014 Advanced Features', type: 'template', youtube: '9G-5SiShBKM', description: 'The evolved version with memory, learning, and proactive suggestions. This assistant doesn\'t just respond to commands \u2014 it notices patterns (you always check analytics on Monday morning) and proactively surfaces relevant info. Includes Google Calendar integration, Notion database reading, and a learning loop that gets better over time. This is the kind of build that makes clients say "how much would it cost to build this for my team?"' }
+            ]
+          },
+          {
+            name: 'Checkpoint',
+            items: [
+              { id: 'CH-404', title: 'Day 4 Knowledge Check', type: 'quiz', youtube: null, description: '(1) Why is a workflow with a frontend worth 5\u201310x more than a workflow alone? (2) What\'s the difference between telling Claude Code "build a React app" vs "build a dashboard where users can review emails"? (3) How do you connect a web frontend to an n8n workflow? (4) When would you use Base44 over a code-generated frontend? (5) What\'s the hub-and-spoke architecture pattern and when is it better than a monolithic workflow? Answers in expandable sections.' },
+              { id: 'CH-405', title: 'Share Your Day 4 Build', type: 'action', youtube: null, description: 'This is the most visual day of the challenge. Post a screenshot (or screen recording) of your web application working. Show the UI, show it connected to n8n, and describe what a user can do with it. Tag #Day4. These posts consistently get the most engagement in the community because everyone can see the transformation from "workflow" to "product." This is portfolio-worthy work \u2014 save it.' }
+            ]
+          }
+        ]
       },
       {
-        id: 'CC-002+RAG', title: 'Day 5: Build a RAG Agent', level: 'Intermediate',
-        levelKey: 'intermediate',
-        youtube: 'QojPKL96Dx4', hasTemplate: true, hasGuide: true,
-        tools: 'Claude Code, n8n, Pinecone/Supabase, OpenAI',
-        summary: '<p>Today you combine Claude Code with one of the highest-value skills in AI automation: RAG (Retrieval-Augmented Generation). You\'ll build an agent that answers questions based on your own documents, not just the AI\'s training data.</p><p>RAG agents are behind custom chatbots, internal knowledge bases, and document Q&A systems. Using Claude Code to build them accelerates what would normally be a complex multi-hour setup into a streamlined build process.</p>',
-        takeaways: ['<strong>RAG = Retrieval-Augmented Generation</strong> \u2014 the AI retrieves relevant info from your documents before responding','<strong>Vector databases</strong> store documents as embeddings that AI can search semantically','<strong>RAG is one of the highest-value skills</strong> you can offer clients \u2014 every business has documents that could power an intelligent chatbot'],
-        actions: ['Use Claude Code to build the RAG agent pipeline','Ingest at least one real document','Test with 5 questions and note accuracy','Share your Day 5 build in the community'],
-        nextStep: 'Day 6: The AI Workflow Generator'
+        day: 5, title: 'RAG & Knowledge Systems', icon: '\uD83D\uDCDA', color: '#06b6d4',
+        subtitle: 'Build AI agents that answer questions from your own documents \u2014 the highest-value skill in AI automation',
+        sections: [
+          {
+            name: 'Learn',
+            items: [
+              { id: 'CH-501', title: 'What is RAG and Why Every Business Needs It', type: 'lesson', youtube: null, description: 'RAG stands for Retrieval-Augmented Generation. In plain English: instead of the AI making things up from its training data, it first searches YOUR documents for relevant information, then generates a response based on what it found. This is behind every "chat with your docs" tool, every custom knowledge base, every internal Q&A bot. Why it matters commercially: every business has documents (SOPs, policies, product specs, training materials) that employees spend hours searching through. A RAG agent that answers questions from those documents saves real time and money. AIS+ members consistently report RAG builds as their highest-paying projects ($3K\u2013$15K per build).' },
+              { id: 'FT-011', title: 'RAG Pipelines: Architecture Deep Dive', type: 'video', youtube: '5uw1wE6niGc', description: 'Nate breaks down the full RAG pipeline architecture: (1) Ingestion \u2014 loading documents into the system (PDFs, web pages, databases). (2) Chunking \u2014 splitting documents into digestible pieces so the AI can find specific information. (3) Embedding \u2014 converting text chunks into mathematical vectors that represent meaning. (4) Storage \u2014 saving those vectors in a vector database (Pinecone, Supabase, Qdrant). (5) Retrieval \u2014 when a user asks a question, finding the most relevant chunks. (6) Generation \u2014 feeding the retrieved chunks to an LLM to generate an answer. Understanding this pipeline is essential. Watch this before you build.' },
+              { id: 'CH-502', title: 'Vector Databases: Pinecone vs Supabase vs Others', type: 'lesson', youtube: null, description: 'Vector databases store your document embeddings and handle similarity search. Here\'s when to use what: Pinecone \u2014 managed, easy to set up, free tier for small projects, best for getting started quickly. Supabase \u2014 open source, runs on Postgres with pgvector, good if you want your data on your own infrastructure. Qdrant \u2014 high performance, good for large datasets. Chroma \u2014 lightweight, great for local development and testing. For this challenge, we use Pinecone (easiest setup) and Supabase (most control). Pick one for your main build \u2014 you can always switch later.' }
+            ]
+          },
+          {
+            name: 'Build',
+            items: [
+              { id: 'FT-024', title: 'Project: Build Your First RAG Agent', type: 'template', youtube: 'cCD303XsUjI', description: 'Your main build today: a RAG agent that ingests documents and answers questions about them. Using Claude Code + n8n, you\'ll build: (1) A document ingestion pipeline that accepts PDFs or text files. (2) A chunking and embedding workflow that processes documents into vectors. (3) A vector storage connection (Pinecone or Supabase). (4) A query pipeline where users ask questions and get AI-generated answers backed by your documents. Start with a small set of documents (3\u20135 pages). Test with questions you know the answer to so you can verify accuracy. Estimated time: 60\u201375 minutes.' },
+              { id: 'FT-014', title: 'Pinecone Assistant Build', type: 'template', youtube: 'QojPKL96Dx4', description: 'An alternative RAG build focused specifically on Pinecone. This template creates a fully managed assistant: you upload documents to Pinecone, and the system handles chunking, embedding, and retrieval automatically. Less customization than building each step yourself, but dramatically faster to deploy. Good for situations where you need a working RAG system in under 30 minutes \u2014 like a client demo or proof of concept.' },
+              { id: 'FT-054', title: 'Alternate Build: Custom RAG AI Agent', type: 'template', youtube: 'iT9xpiUwVbI', description: 'This version builds the RAG system with more manual control over each step. Instead of using Pinecone\'s managed pipeline, you configure the chunking strategy, choose the embedding model, and write custom retrieval logic. The result is more work upfront but a system you can tune precisely. Build this if you finished the main project early and want to understand what\'s happening under the hood of the managed version.' }
+            ]
+          },
+          {
+            name: 'Go Deeper',
+            items: [
+              { id: 'FT-029', title: 'RAG Reranking: Better Answers, Same Data', type: 'template', youtube: 'xWhX61651H8', description: 'Basic RAG retrieves the top N most similar chunks. Reranking adds a second pass: after retrieval, a reranking model re-scores the chunks based on how well they actually answer the question (not just how similar they are to it). This consistently improves answer quality by 15\u201330% with minimal added complexity. If your RAG agent is returning "close but not quite right" answers, reranking is usually the fix.' },
+              { id: 'FT-055', title: 'Dynamic Brain: Self-Updating Knowledge', type: 'template', youtube: 'gwCQF--cARA', description: 'Most RAG systems are static \u2014 you load documents once and the knowledge is frozen. Dynamic Brain is a pattern where the system automatically detects new or changed documents, re-processes them, and updates the vector store. This means your RAG agent always has the latest information. Critical for use cases like company wikis, product documentation, or any knowledge base that changes regularly.' },
+              { id: 'FT-026', title: 'Long-Term Memory with ZEP', type: 'template', youtube: 'kNsX2qu8jHY', description: 'ZEP adds conversation memory to your AI agents. Instead of each conversation starting from scratch, ZEP stores past interactions and makes them searchable. Your agent can reference what a user asked last week, remember their preferences, and maintain context across sessions. This is the difference between a chatbot that feels disposable and one that feels like it actually knows you.' },
+              { id: 'FT-064', title: 'Voice RAG Agent', type: 'template', youtube: 'pJYm7MOyMH0', description: 'Combine everything from today with a voice interface. Ask questions about your documents by speaking, and hear the answers read back. Uses ElevenLabs for speech synthesis and Whisper for speech recognition. The end result is like having a voice assistant that actually knows your specific documents. Impressive for demos, genuinely useful for hands-free information retrieval.' }
+            ]
+          },
+          {
+            name: 'Checkpoint',
+            items: [
+              { id: 'CH-503', title: 'Day 5 Knowledge Check', type: 'quiz', youtube: null, description: '(1) What are the 6 stages of a RAG pipeline? (2) Why does chunking strategy matter and what happens if chunks are too large or too small? (3) What\'s the difference between similarity search and reranking? (4) When would you use Pinecone vs Supabase? (5) Why is RAG consistently the highest-paying AI automation skill? Answers in expandable sections.' },
+              { id: 'CH-504', title: 'Share Your Day 5 Build', type: 'action', youtube: null, description: 'Post your RAG agent in action with: (1) What documents you loaded. (2) A question you asked and the answer it returned. (3) Whether the answer was accurate (and if not, what went wrong). (4) How many documents/chunks your system is working with. Tag #Day5. RAG builds are the most impressive to potential clients \u2014 save this for your portfolio.' }
+            ]
+          }
+        ]
       },
       {
-        id: 'FT-032+CC', title: 'Day 6: The AI Workflow Generator', level: 'Intermediate+',
-        levelKey: 'intermediate-plus',
-        youtube: 'Ik8OHT3w4pE', hasTemplate: true, hasGuide: false,
-        tools: 'Claude Code, n8n, OpenAI',
-        summary: '<p>Today is meta: you\'re building an AI agent that builds other n8n workflows. Combining the n8n Developer Agent template with your Claude Code skills, you\'ll create a system that generates, validates, and deploys workflows from natural language descriptions.</p><p>This is the culmination of everything you\'ve learned about Claude Code \u2014 now packaged as a reusable tool. This is also an incredibly sellable product: businesses pay premium for tools that let non-technical people create their own automations.</p>',
-        takeaways: ['<strong>Meta-building</strong> \u2014 an AI that builds automations is one of the most powerful things you can create','<strong>Combining templates with Claude Code skills</strong> produces results neither could achieve alone','<strong>This is a sellable product</strong> \u2014 companies pay $5K-$25K+ for custom workflow generation tools'],
-        actions: ['Build the workflow generator using Claude Code + the n8n Developer Agent template','Generate at least 3 different workflows through your tool','Test and validate each generated workflow','Share your Day 6 build \u2014 this is portfolio-worthy'],
-        nextStep: 'Day 7: Self-Healing Workflows (Capstone)'
+        day: 6, title: 'Multi-Agent & Advanced Systems', icon: '\u2699\uFE0F', color: '#ec4899',
+        subtitle: 'Build systems where multiple AI agents collaborate, delegate, and solve problems together',
+        sections: [
+          {
+            name: 'Learn',
+            items: [
+              { id: 'CH-601', title: 'When One Agent Isn\'t Enough: Multi-Agent Thinking', type: 'lesson', youtube: null, description: 'Single agents hit a ceiling. They\'re great at focused tasks, but struggle with complex multi-step problems that require different types of expertise. Multi-agent systems solve this by splitting complex work across specialized agents that collaborate. Think of it like a team: you wouldn\'t hire one person to do marketing, sales, engineering, and support. You\'d hire specialists. Same principle applies to AI. Today you\'ll learn three multi-agent patterns: (1) Pipeline \u2014 agents process data in sequence, each adding value. (2) Orchestrator \u2014 one manager agent delegates to specialist agents. (3) Swarm \u2014 agents work in parallel and merge their results. Each pattern is suited to different problems.' },
+              { id: 'FT-033', title: 'Multi-Agent System Design', type: 'video', youtube: '0iUNOmeU7O4', description: 'Nate walks through the why and how of multi-agent systems in n8n. Covers the real benefits (specialization, parallel processing, easier debugging) and the real costs (more complex, harder to test, more API calls). The key takeaway: don\'t use multi-agent systems because they sound impressive \u2014 use them when a single agent genuinely can\'t handle the complexity. This video shows you how to make that decision and how to architect the system once you\'ve decided.' },
+              { id: 'FT-068', title: 'The 4 Agentic Frameworks You Need to Know', type: 'video', youtube: 'nSQnJoqK4DQ', description: 'Four frameworks for building AI agent systems, each suited to different problems: (1) ReAct (Reasoning + Acting) \u2014 the agent thinks step by step and takes actions based on its reasoning. Best for complex problem-solving. (2) Plan-and-Execute \u2014 the agent creates a full plan first, then executes each step. Best for multi-step tasks with clear goals. (3) Reflection \u2014 the agent reviews its own output and improves it. Best for content generation and quality-critical tasks. (4) Tool Use \u2014 the agent has access to external tools and learns when to use each one. Best for versatile assistants. Understanding these frameworks tells you which pattern to reach for when designing your systems.' }
+            ]
+          },
+          {
+            name: 'Build',
+            items: [
+              { id: 'FT-032', title: 'Project: AI Workflow Generator \u2014 An Agent That Builds Agents', type: 'template', youtube: 'Ik8OHT3w4pE', description: 'Today\'s main build is meta: you\'re building an AI agent that generates n8n workflows from plain English descriptions. A user describes what they want ("build me a workflow that monitors Twitter for mentions and sends a Slack alert"), and your agent generates a complete, working n8n workflow JSON. This uses everything from the challenge: Claude Code for the build process, n8n for the runtime, and multi-agent patterns for the architecture (one agent for understanding the request, one for generating the workflow, one for validating it). This is also an extremely sellable tool \u2014 companies pay $5K\u2013$25K+ for custom workflow generators.' },
+              { id: 'FT-022', title: 'Build: Agent Swarm Collaboration', type: 'template', youtube: 'vpyllOeLhs4', description: 'Build a swarm of specialized agents that coordinate on complex tasks. The template creates: a Research Agent (finds and summarizes information), an Analysis Agent (identifies patterns and insights), a Writing Agent (produces polished output), and a Manager Agent (coordinates the others and merges results). The swarm pattern is powerful because each agent is simple and focused, but together they handle problems that would overwhelm any single agent. Follow along to build the full swarm, then customize the agent specializations for your own use case.' },
+              { id: 'FT-058', title: 'Bonus Build: The Ultimate Team of AI Assistants', type: 'template', youtube: '9FuNtfsnRNo', description: 'A team of AI assistants, each with distinct personalities and skills, coordinated by a manager agent. The manager analyzes incoming requests, determines which assistant(s) are needed, delegates the work, collects results, and delivers a unified response. This is the most impressive demo build in the entire challenge \u2014 when you show a client a team of AI agents working together on their problem, it changes the conversation from "can AI do this?" to "when can we start?"' }
+            ]
+          },
+          {
+            name: 'Go Deeper',
+            items: [
+              { id: 'FT-057', title: 'Human-in-the-Loop Sales Team', type: 'template', youtube: 'FcAAlOw6KZ8', description: 'A multi-agent sales system with a critical addition: human approval gates at key decision points. The AI agents handle research, drafting, and scheduling, but a human reviews and approves before anything is sent to a prospect. This is the pattern that makes multi-agent systems safe for business-critical processes. Every client project should include human-in-the-loop checkpoints.' },
+              { id: 'FT-034', title: 'Browser Agent: Web Automation with AI', type: 'template', youtube: 'ar37oypyATQ', description: 'Build an agent that can browse the web like a human: navigate pages, fill forms, click buttons, extract data, and take screenshots. Uses browser automation tools connected through n8n. Powerful for scraping dynamic websites, monitoring competitor pages, or automating repetitive web tasks that don\'t have APIs.' },
+              { id: 'FT-043', title: 'AI Marketing Team', type: 'template', youtube: 'ldETapkr8Hg', description: 'A complete AI marketing department: a Content Agent that writes blog posts and social media, a Strategy Agent that analyzes performance data and suggests optimizations, a Scheduling Agent that publishes at optimal times, and a Reporting Agent that generates weekly summaries. This is a real product that agencies are starting to offer as a service. Build it here, sell it to a marketing team later.' },
+              { id: 'FT-062', title: 'Research & Content Creation Pipeline', type: 'template', youtube: 'u2Tuu02r7QI', description: 'Agents that research a topic deeply (searching the web, reading articles, synthesizing information) and then produce original, well-sourced content. The pipeline: Topic Input \u2192 Research Agent (gathers sources) \u2192 Analysis Agent (identifies key points) \u2192 Writing Agent (produces the content) \u2192 Quality Agent (checks accuracy and readability). Each agent is a separate n8n workflow connected through webhooks.' }
+            ]
+          },
+          {
+            name: 'Checkpoint',
+            items: [
+              { id: 'CH-602', title: 'Day 6 Knowledge Check', type: 'quiz', youtube: null, description: '(1) What are the three multi-agent patterns and when do you use each? (2) Name the four agentic frameworks from the video and give a use case for each. (3) Why should every client-facing multi-agent system include human-in-the-loop gates? (4) What\'s the difference between a Pipeline and a Swarm pattern? (5) When should you NOT use a multi-agent system? Answers in expandable sections.' },
+              { id: 'CH-603', title: 'Share Your Day 6 Build', type: 'action', youtube: null, description: 'Today\'s build is the most complex yet. Post: (1) A diagram or screenshot of your multi-agent system architecture. (2) What each agent is responsible for. (3) How they communicate with each other. (4) The most surprising thing about building a multi-agent system. Tag #Day6. This is absolutely portfolio material \u2014 multi-agent builds are rare in the wild and impressive to clients.' }
+            ]
+          }
+        ]
       },
       {
-        id: 'CC-004', title: 'Day 7: Self-Healing Workflows \u2014 Capstone', level: 'Advanced',
-        levelKey: 'advanced',
-        youtube: 'uUEa6K-FLB8', hasTemplate: false, hasGuide: true,
-        tools: 'Claude Code, n8n, Error Detection Systems',
-        summary: '<p>This is your capstone build. Today you construct self-healing n8n workflows \u2014 systems that detect their own errors and use Claude Code to automatically diagnose, fix, and redeploy themselves.</p><p>You\'ve gone from setup to self-healing systems in 7 days. This capstone demonstrates the most advanced production-grade pattern: autonomous error recovery. This is the kind of architecture that professionals charge $10K-$25K+ to build and is a powerful selling point for premium client projects.</p>',
-        takeaways: ['<strong>Self-healing workflows</strong> detect errors and automatically repair themselves \u2014 the pinnacle of production-grade automation','<strong>Autonomous error recovery</strong> reduces maintenance costs and increases reliability dramatically','<strong>This is a premium selling point</strong> \u2014 clients pay top dollar for systems that don\'t break'],
-        actions: ['Build the self-healing workflow system','Intentionally break a workflow and verify it auto-recovers','Document the error detection and repair patterns','Post your Day 7 completion in the community','Look back at Day 1: compare your first workflow to today\'s self-healing system'],
-        resources: [{name: 'Self-Healing Patterns Guide', type: 'guide'}],
-        nextStep: 'Challenge Complete! Explore Claude Code Mastery for deep dives, or the Template Library for more builds.'
+        day: 7, title: 'Self-Healing Systems & Capstone', icon: '\uD83C\uDFC6', color: '#f97316',
+        subtitle: 'Build production-grade systems that detect and fix their own errors \u2014 the capstone of everything you\'ve learned',
+        sections: [
+          {
+            name: 'Learn',
+            items: [
+              { id: 'CC-004', title: 'Self-Healing n8n Workflows', type: 'video', youtube: '7PGKbJFZTak', description: 'The crown jewel of the challenge. Nate builds a workflow that monitors itself for errors, diagnoses what went wrong, uses Claude Code to generate a fix, applies the fix, and re-runs the failed step \u2014 all without human intervention. This is the most advanced pattern in n8n automation and the one that commands the highest prices from clients. A system that never breaks (or fixes itself when it does) is worth an order of magnitude more than one that requires manual monitoring. Watch this video carefully \u2014 you\'re building this today.' },
+              { id: 'CH-701', title: 'Production-Grade Architecture: What Separates Demos from Real Systems', type: 'lesson', youtube: null, description: 'Everything you\'ve built so far works. But "works on my machine" and "runs reliably in production for a client" are very different things. This lesson covers the five pillars of production-grade automation: (1) Monitoring \u2014 knowing when something fails before the client does. (2) Logging \u2014 recording enough information to diagnose problems after the fact. (3) Error Recovery \u2014 automatic retry logic, fallback paths, and graceful degradation. (4) Security \u2014 credential management, webhook auth, and data handling. (5) Scalability \u2014 designing workflows that handle 10 requests the same as 10,000. You don\'t need all five for a demo. You need all five for anything a client is paying for.' },
+              { id: 'CH-702', title: 'Error Detection & Auto-Recovery: The Patterns', type: 'lesson', youtube: null, description: 'Three patterns for self-healing systems: (1) Retry with Backoff \u2014 if a step fails, wait and try again with increasing delays. Handles transient errors like API timeouts. (2) Error Classification + Fix \u2014 catch the error, classify what type it is (auth, data, timeout, logic), and apply a type-specific fix. This is where Claude Code shines \u2014 you can use it to analyze error messages and generate targeted fixes. (3) Watchdog Process \u2014 a separate workflow that monitors your other workflows, detects anomalies (like a workflow that should run every hour but hasn\'t run in 3 hours), and takes corrective action. The capstone build combines all three.' }
+            ]
+          },
+          {
+            name: 'Build',
+            items: [
+              { id: 'CH-703', title: 'Capstone: Self-Healing Workflow System', type: 'build', youtube: null, description: 'Your final build. Construct a self-healing system with three components: (1) A "target workflow" \u2014 pick any workflow you\'ve built this week (email agent, RAG system, etc.). (2) An "error detection" workflow that monitors the target for failures, catches error details, and logs them. (3) A "self-repair" workflow that receives error information, uses Claude Code (via API) to diagnose the issue and generate a fix, applies the fix to the target workflow, and re-triggers the failed execution. To test it: intentionally break your target workflow (wrong API key, invalid data, missing node configuration) and watch the self-healing system detect and fix the issue automatically. This is the most impressive thing most people have ever built with AI. Estimated time: 90\u2013120 minutes.' },
+              { id: 'FT-041', title: 'Build: Comprehensive Agent Logging', type: 'template', youtube: 'vVdS-ZEFf50', description: 'Before your system can heal itself, it needs to know what\'s happening. This template builds a logging system that tracks every action your agents take: what was requested, what was attempted, what succeeded, what failed, and how long each step took. Logs are stored in a structured format (Google Sheets, Supabase, or n8n Data Tables) that your error detection workflow can query. Without good logging, debugging is guesswork. With it, every problem is traceable.' },
+              { id: 'FT-016', title: 'Build: Automated Workflow Evaluation', type: 'template', youtube: '-zFd1nPn6U0', description: 'Build an evaluation pipeline that automatically tests your workflows against known inputs and expected outputs. Think of it as unit testing for n8n: you define test cases, the evaluation workflow runs each one, compares actual vs. expected results, and flags any discrepancies. This is powerful for catching regressions \u2014 when a fix for one bug accidentally breaks something else. Run evaluations after every self-healing repair to make sure the fix didn\'t introduce new problems.' }
+            ]
+          },
+          {
+            name: 'Go Deeper',
+            items: [
+              { id: 'FT-027', title: 'Parallelization & Subworkflows', type: 'template', youtube: 'qNW9KaLe1nY', description: 'As your systems get more complex, they need to run faster. This template teaches you two scaling patterns: (1) Parallelization \u2014 splitting work into independent chunks and processing them simultaneously. A batch of 100 emails that takes 10 minutes sequentially can run in 1 minute in parallel. (2) Subworkflows \u2014 breaking large workflows into modular, reusable sub-workflows that you can test and maintain independently. Both patterns are essential for production systems that handle real volume.' },
+              { id: 'FT-007', title: 'Guardrails: Safety & Output Validation', type: 'template', youtube: 'oWdJMJp2HgM', description: 'AI agents can generate harmful, incorrect, or off-brand content. Guardrails are validation layers that check agent outputs before they reach users. This template covers: content safety filters, output format validation, confidence thresholds (if the AI isn\'t confident, route to human review), rate limiting to prevent runaway agents, and cost caps to prevent unexpected API bills. Critical for any agent that interacts with customers or produces public-facing content.' },
+              { id: 'FT-047', title: 'Supabase & Postgres for Production Data', type: 'template', youtube: 'JjBofKJnYIU', description: 'Google Sheets works for demos. Production systems need real databases. This template connects n8n to Supabase (hosted Postgres) for structured data storage: logging, user data, configuration, and state management. You\'ll learn how to create tables, write queries, and handle database operations from n8n workflows. If you\'re building systems for clients, this is the data layer they expect.' }
+            ]
+          },
+          {
+            name: 'Challenge Complete',
+            items: [
+              { id: 'CH-704', title: 'Day 7 Knowledge Check (Final)', type: 'quiz', youtube: null, description: '(1) What are the five pillars of production-grade automation? (2) Describe the three self-healing patterns and when each is appropriate. (3) Why is logging critical for self-healing systems? (4) What should an evaluation pipeline test after every self-repair? (5) If a client asks "what happens when the system breaks?" \u2014 what\'s your answer now? Answers in expandable sections.' },
+              { id: 'CH-705', title: 'Submit Your Capstone Build', type: 'action', youtube: null, description: 'This is it. Post your capstone in the community with: (1) A screenshot or diagram of your self-healing system architecture. (2) A description of the three components (target, detector, repairer). (3) A video or series of screenshots showing the system detect and fix a real error. (4) A reflection: compare your Day 1 workflow to your Day 7 capstone. How far have you come? Tag #Day7 and #Capstone. Nate personally reviews every capstone submission.' },
+              { id: 'CH-706', title: 'Claim Your Challenge Rewards', type: 'reward', youtube: null, description: 'You finished. Seven days. Seven builds. From installing Claude Code to building self-healing production systems. Here\'s how to claim your rewards: (1) Click the Google Form link below. (2) Submit proof of your 7 completed builds (screenshots or community post links). (3) Within 48 hours, you\'ll receive: your Hall of Builders listing, partner discount codes (Airtop, Apify, Blotato, Firecrawl, Hostinger, Lindy, Twitter Scraper, Poppy AI), and an exclusive AIS+ discount code that isn\'t available anywhere else. You earned this.' },
+              { id: 'CH-707', title: 'Your Path Forward: What to Do Next', type: 'lesson', youtube: null, description: 'You\'re no longer a beginner. Here\'s where to go from here based on your goals: (A) Want to go deeper technically? \u2192 Claude Code Mastery module has deep-dive references for everything you learned. The Skills Library has downloadable templates you can use in your own projects. (B) Want to build more? \u2192 The n8n Template Library has 70+ templates organized by category. Build one a day and you\'ll have an incredible portfolio within a month. (C) Want to make money with this? \u2192 AIS+ is where members learn to find clients, price projects, and deliver AI automation as a service. Members like Aidan ($14K contract), Mike ($6K first client), and Jose ($500 first audit) started exactly where you are now. The skills you\'ve built this week are commercially valuable. The question is whether you want to sell them.' }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -910,14 +1112,29 @@ const MODULES = [
     icon: '\uD83E\uDDE0',
     iconBg: '#1a2d2d',
     section: 'core-curriculum',
-    isSpecial: 'skills',
-    skills: [
-      { id: 'SKILL-001', title: 'n8n Workflow Generator', description: 'Generate complete n8n workflows from natural language descriptions. Includes node selection, connection logic, and error handling patterns.', category: 'n8n' },
-      { id: 'SKILL-002', title: 'n8n Workflow Debugger', description: 'Diagnose and fix broken n8n workflows. Analyzes error logs, identifies root causes, and applies targeted repairs.', category: 'n8n' },
-      { id: 'SKILL-003', title: 'RAG Pipeline Builder', description: 'Build retrieval-augmented generation systems. Handles document ingestion, embedding generation, vector storage, and query pipelines.', category: 'AI' },
-      { id: 'SKILL-004', title: 'API Integration Builder', description: 'Create API integrations with authentication, error handling, rate limiting, and data transformation.', category: 'Development' },
-      { id: 'SKILL-005', title: 'Web App Generator', description: 'Generate full-stack web applications with React frontends connected to n8n workflow backends.', category: 'Development' },
-      { id: 'SKILL-006', title: 'Self-Healing System Setup', description: 'Configure autonomous error detection, diagnosis, and repair for n8n workflow instances.', category: 'n8n' }
+    isLibrary: true,
+    libraryType: 'skills',
+    categories: [
+      {
+        name: 'Claude Code Tutorials',
+        templates: [
+          { id: 'CC-001', title: 'Build n8n Flows with Claude Code', level: 'Beginner', youtube: 'I8YO_UaL5Xw' },
+          { id: 'CC-002', title: 'Build ANYTHING with n8n & Claude Code', level: 'Intermediate', youtube: 'TgiSxMBsdKE' },
+          { id: 'CC-003', title: 'Master 95% of Claude Code', level: 'All Levels', youtube: 'BVNhg1pCbeg' },
+          { id: 'CC-004', title: 'Self-Healing n8n Workflows', level: 'Advanced', youtube: '7PGKbJFZTak' }
+        ]
+      },
+      {
+        name: 'Downloadable Skills',
+        templates: [
+          { id: 'SKILL-001', title: 'n8n Workflow Generator', level: 'Skill Template', youtube: null },
+          { id: 'SKILL-002', title: 'n8n Workflow Debugger', level: 'Skill Template', youtube: null },
+          { id: 'SKILL-003', title: 'RAG Pipeline Builder', level: 'Skill Template', youtube: null },
+          { id: 'SKILL-004', title: 'API Integration Builder', level: 'Skill Template', youtube: null },
+          { id: 'SKILL-005', title: 'Web App Generator', level: 'Skill Template', youtube: null },
+          { id: 'SKILL-006', title: 'Self-Healing System Setup', level: 'Skill Template', youtube: null }
+        ]
+      }
     ]
   },
   {
@@ -941,7 +1158,8 @@ const MODULES = [
           { id: 'FT-042', title: 'Product Videos', level: 'Intermediate', youtube: null },
           { id: 'FT-043', title: 'AI Marketing Team', level: 'Intermediate \u2192 Advanced', youtube: 'ldETapkr8Hg' },
           { id: 'FT-044', title: 'OpenAI Image Gen LinkedIn Post', level: 'Beginner \u2192 Intermediate', youtube: 'ACkHpQQnfxQ' },
-          { id: 'FT-036', title: 'HeyGen Avatar', level: 'Beginner \u2192 Intermediate', youtube: 'llm60n03x3c' }
+          { id: 'FT-036', title: 'HeyGen Avatar', level: 'Beginner \u2192 Intermediate', youtube: 'llm60n03x3c' },
+          { id: 'FT-046', title: 'Faceless Shorts System', level: 'Intermediate', youtube: 'Gc03J27xmBc' }
         ]
       },
       {
@@ -950,6 +1168,10 @@ const MODULES = [
           { id: 'FT-001', title: 'Gamma Proposals', level: 'Intermediate', youtube: 'KGXFkUlBHxw' },
           { id: 'FT-002', title: 'Outbound Lead Qualifier (Voice Agent)', level: 'Advanced', youtube: 'BO-jFbN4p8Y' },
           { id: 'FT-017', title: 'AI Newsletter System', level: 'Intermediate', youtube: 'pxzo2lXhWJE' },
+          { id: 'FT-051', title: 'Lead Assistant AI Agent', level: 'Intermediate', youtube: 'fz1RduhHeks' },
+          { id: 'FT-052', title: 'Google Scraping AI Agent', level: 'Intermediate', youtube: 'R36bpNPPIMs' },
+          { id: 'FT-053', title: 'Client Onboarding AI Agent', level: 'Intermediate', youtube: 'Wpwbm3zCymk' },
+          { id: 'FT-057', title: 'Human In The Loop Sales Team', level: 'Intermediate \u2192 Advanced', youtube: 'FcAAlOw6KZ8' },
           { id: 'FT-067', title: 'Automated Newsletters with Research Agents', level: 'Intermediate \u2192 Advanced', youtube: 'HUdm3NXwk-w' },
           { id: 'FT-070', title: 'Twitter/X Scraper', level: 'Intermediate', youtube: 'lEo7IAgj0UY' }
         ]
@@ -962,6 +1184,8 @@ const MODULES = [
           { id: 'FT-024', title: 'RAG Agent', level: 'Intermediate', youtube: 'cCD303XsUjI' },
           { id: 'FT-026', title: 'ZEP Memory', level: 'Intermediate \u2192 Advanced', youtube: 'kNsX2qu8jHY' },
           { id: 'FT-029', title: 'RAG Reranking', level: 'Intermediate \u2192 Advanced', youtube: 'xWhX61651H8' },
+          { id: 'FT-054', title: 'RAG AI Agent', level: 'Intermediate', youtube: 'iT9xpiUwVbI' },
+          { id: 'FT-055', title: 'Dynamic Brain', level: 'Intermediate \u2192 Advanced', youtube: 'gwCQF--cARA' },
           { id: 'FT-064', title: 'Voice RAG Agent', level: 'Intermediate \u2192 Advanced', youtube: 'pJYm7MOyMH0' }
         ]
       },
@@ -970,6 +1194,7 @@ const MODULES = [
         templates: [
           { id: 'FT-021', title: 'Voice Workflows', level: 'Intermediate', youtube: 'qJRFu88HUio' },
           { id: 'FT-064', title: 'Voice RAG Agent', level: 'Intermediate \u2192 Advanced', youtube: 'pJYm7MOyMH0' },
+          { id: 'FT-056', title: 'Voice Travel Agent', level: 'Intermediate', youtube: '5zhTxuuPc3A' },
           { id: 'FT-065', title: 'Voice Email Agent', level: 'Beginner \u2192 Intermediate', youtube: 'Je4EAscnKK0' }
         ]
       },
@@ -982,6 +1207,14 @@ const MODULES = [
           { id: 'FT-041', title: 'Log Agent Outputs', level: 'Intermediate', youtube: 'vVdS-ZEFf50' },
           { id: 'FT-045', title: 'JARVIS (Multi-Tool Personal Assistant)', level: 'Intermediate \u2192 Advanced', youtube: 'KUvSzvFeZls' },
           { id: 'FT-063', title: 'Invoice AI Agent', level: 'Beginner \u2192 Intermediate', youtube: 'skHe-qIRkM4' },
+          { id: 'FT-048', title: 'Customer Support', level: 'Intermediate', youtube: 'KIJHRq_Tg6o' },
+          { id: 'FT-049', title: 'AI Personal Assistant', level: 'Beginner \u2192 Intermediate', youtube: 'ZP4fjVWKt2w' },
+          { id: 'FT-050', title: 'Inbox Management AI Agent', level: 'Intermediate', youtube: 'x1tam0Fhymc' },
+          { id: 'FT-058', title: 'The Ultimate Team of Assistants', level: 'Intermediate \u2192 Advanced', youtube: '9FuNtfsnRNo' },
+          { id: 'FT-059', title: 'Personal Assistant AI Agent', level: 'Beginner \u2192 Intermediate', youtube: 'omw1MEvMCo0' },
+          { id: 'FT-060', title: 'Personal Assistant 2.0', level: 'Intermediate', youtube: '9G-5SiShBKM' },
+          { id: 'FT-061', title: 'Email Manager AI Agent', level: 'Intermediate', youtube: 'JUx2ZfNfD64' },
+          { id: 'FT-062', title: 'Research and Content Creation Agents', level: 'Intermediate', youtube: 'u2Tuu02r7QI' },
           { id: 'FT-066', title: 'Technical Analyst AI Agent', level: 'Intermediate', youtube: 'dooXxhGy5Ow' }
         ]
       },
@@ -1003,6 +1236,9 @@ const MODULES = [
           { id: 'FT-038', title: 'Apify', level: 'Beginner \u2192 Intermediate', youtube: 'gZ_RLC25gCw' },
           { id: 'FT-039', title: 'n8n Hacks', level: 'Beginner \u2192 Advanced', youtube: 'zMy5yoA-ub8' },
           { id: 'FT-068', title: '4 Agentic Frameworks', level: 'Intermediate', youtube: 'nSQnJoqK4DQ' },
+          { id: 'FT-020', title: 'Error Handling', level: 'Intermediate', youtube: 'Irk4-DO5qgM' },
+          { id: 'FT-032', title: 'n8n Agent Builder', level: 'Intermediate \u2192 Advanced', youtube: 'Ik8OHT3w4pE' },
+          { id: 'FT-047', title: 'Supabase & Postgres', level: 'Intermediate', youtube: 'JjBofKJnYIU' },
           { id: 'FT-004', title: 'Gemini File Search', level: 'Intermediate', youtube: 'irg-2IfAjpo' }
         ]
       },
@@ -1148,9 +1384,9 @@ function renderSidebar() {
     }
 
     var lessonCount = mod.lessons ? mod.lessons.length :
+                      mod.isChallenge ? mod.days.reduce(function(s,d) { return s + d.sections.reduce(function(ss,sec) { return ss + sec.items.length; }, 0); }, 0) :
                       mod.isLibrary ? mod.categories.reduce(function(s,c) { return s + c.templates.length; }, 0) :
                       mod.isSpecial === 'discussions' ? mod.discussions.length :
-                      mod.isSpecial === 'skills' ? mod.skills.length :
                       mod.isSpecial === 'podcast' ? mod.episodes.length :
                       mod.isSpecial === 'discounts' ? mod.discounts.length :
                       mod.isSpecial === 'success-stories' ? mod.stories.length :
@@ -1190,14 +1426,21 @@ function renderSidebar() {
 
         html += '</div>';
       });
+    } else if (mod.isChallenge) {
+      mod.days.forEach(function(day, di) {
+        var itemCount = day.sections.reduce(function(s,sec) { return s + sec.items.length; }, 0);
+        html += '<div class="lesson-item" data-module="' + mi + '" data-day="' + di + '" onclick="selectDay(' + mi + ',' + di + ')" style="font-weight:600;color:var(--text)">';
+        html += '<span class="lesson-num" style="background:' + day.color + ';color:#fff;min-width:22px;text-align:center;border-radius:4px;padding:1px 4px;font-size:10px">' + (day.day === 0 ? 'HQ' : day.day) + '</span>';
+        html += '<span style="flex:1">' + day.icon + ' ' + day.title + '</span>';
+        html += '<span style="font-size:11px;color:var(--text-muted)">' + itemCount + '</span>';
+        html += '</div>';
+      });
     } else if (mod.isLibrary) {
       mod.categories.forEach(function(cat, ci) {
         html += '<div class="lesson-item" data-module="' + mi + '" data-cat="' + ci + '" onclick="selectCategory(' + mi + ',' + ci + ')" style="font-weight:600;color:var(--text)">';
         html += '<span class="lesson-num">' + cat.templates.length + '</span> ' + cat.name;
         html += '</div>';
       });
-    } else if (mod.isSpecial === 'skills') {
-      html += '<div class="lesson-item" onclick="selectSpecial(' + mi + ',\'skills\')"><span class="lesson-num">' + mod.skills.length + '</span> Skills Available</div>';
     } else if (mod.isSpecial === 'podcast') {
       html += '<div class="lesson-item" onclick="selectSpecial(' + mi + ',\'podcast\')"><span class="lesson-num">' + mod.episodes.length + '</span> Episodes</div>';
     } else if (mod.isSpecial === 'discounts') {
@@ -1358,6 +1601,111 @@ function goNext(mi, li) {
   }
 }
 
+function selectDay(mi, di) {
+  var mod = MODULES[mi];
+  var day = mod.days[di];
+  var main = document.getElementById('main-content');
+
+  document.querySelectorAll('.lesson-item').forEach(function(el) { el.classList.remove('active'); });
+  var item = document.querySelector('.lesson-item[data-module="' + mi + '"][data-day="' + di + '"]');
+  if (item) item.classList.add('active');
+
+  var html = '<div class="lesson-view">';
+
+  // Day header with color accent
+  html += '<div style="background:linear-gradient(135deg,' + day.color + '22,' + day.color + '08);border:1px solid ' + day.color + '44;border-radius:16px;padding:32px;margin-bottom:32px;text-align:center">';
+  html += '<div style="font-size:48px;margin-bottom:8px">' + day.icon + '</div>';
+  html += '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:' + day.color + ';margin-bottom:8px">' + (day.day === 0 ? 'Challenge HQ' : 'Day ' + day.day + ' of 7') + '</div>';
+  html += '<h1 style="font-size:28px;font-weight:800;color:var(--text);margin:0 0 8px">' + day.title + '</h1>';
+  html += '<p style="color:var(--text-muted);font-size:15px;margin:0">' + day.subtitle + '</p>';
+  html += '</div>';
+
+  // Stats bar
+  var totalItems = day.sections.reduce(function(s,sec) { return s + sec.items.length; }, 0);
+  var videoCount = day.sections.reduce(function(s,sec) { return s + sec.items.filter(function(it) { return it.youtube; }).length; }, 0);
+  var buildCount = day.sections.reduce(function(s,sec) { return s + sec.items.filter(function(it) { return it.type === 'build' || it.type === 'template'; }).length; }, 0);
+  html += '<div style="display:flex;gap:12px;margin-bottom:32px;flex-wrap:wrap">';
+  html += '<div style="flex:1;min-width:80px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;text-align:center">';
+  html += '<div style="font-size:20px;font-weight:800;color:' + day.color + '">' + totalItems + '</div><div style="font-size:11px;color:var(--text-muted)">Total Items</div></div>';
+  html += '<div style="flex:1;min-width:80px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;text-align:center">';
+  html += '<div style="font-size:20px;font-weight:800;color:' + day.color + '">' + videoCount + '</div><div style="font-size:11px;color:var(--text-muted)">Videos</div></div>';
+  html += '<div style="flex:1;min-width:80px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;text-align:center">';
+  html += '<div style="font-size:20px;font-weight:800;color:' + day.color + '">' + buildCount + '</div><div style="font-size:11px;color:var(--text-muted)">Builds</div></div>';
+  html += '<div style="flex:1;min-width:80px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;text-align:center">';
+  html += '<div style="font-size:20px;font-weight:800;color:' + day.color + '">' + day.sections.length + '</div><div style="font-size:11px;color:var(--text-muted)">Sections</div></div>';
+  html += '</div>';
+
+  // Sections
+  var typeIcons = { video: '\u25B6', lesson: '\uD83D\uDCD6', build: '\uD83D\uDD28', template: '\u2B07', quiz: '\u2753', action: '\uD83D\uDCAC', resource: '\uD83D\uDCE6', reward: '\uD83C\uDFC6' };
+  var typeColors = { video: '#ef4444', lesson: '#3b82f6', build: '#22c55e', template: '#a855f7', quiz: '#f59e0b', action: '#06b6d4', resource: '#6366f1', reward: '#f97316' };
+  var typeLabels = { video: 'Video', lesson: 'Lesson', build: 'Build Project', template: 'Template', quiz: 'Knowledge Check', action: 'Community Action', resource: 'Resource', reward: 'Reward' };
+
+  day.sections.forEach(function(sec, si) {
+    html += '<div style="margin-bottom:28px">';
+    html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">';
+    html += '<div style="width:4px;height:20px;border-radius:2px;background:' + day.color + '"></div>';
+    html += '<h2 style="font-size:16px;font-weight:700;color:var(--text);margin:0">' + sec.name + '</h2>';
+    html += '<span style="font-size:11px;color:var(--text-muted)">(' + sec.items.length + ')</span>';
+    html += '</div>';
+
+    sec.items.forEach(function(item) {
+      var vid = item.youtube ? extractVideoId(item.youtube) : null;
+      var typeIcon = typeIcons[item.type] || '\uD83D\uDCCC';
+      var typeColor = typeColors[item.type] || '#888';
+      var typeLabel = typeLabels[item.type] || item.type;
+
+      html += '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background=\'rgba(255,255,255,0.06)\';this.style.borderColor=\'' + day.color + '44\'" onmouseout="this.style.background=\'rgba(255,255,255,0.03)\';this.style.borderColor=\'rgba(255,255,255,0.08)\'">';
+
+      html += '<div style="display:flex;align-items:flex-start;gap:12px">';
+
+      // Thumbnail or type icon
+      if (vid) {
+        html += '<div style="flex-shrink:0;width:120px;height:68px;border-radius:8px;overflow:hidden;position:relative">';
+        html += '<img src="https://img.youtube.com/vi/' + vid + '/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML=\'<div style=padding:20px;text-align:center;background:rgba(255,255,255,0.05);height:100%;display:flex;align-items:center;justify-content:center;font-size:24px>' + typeIcon + '</div>\'">';
+        html += '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;font-size:12px">\u25B6</div></div>';
+        html += '</div>';
+      } else {
+        html += '<div style="flex-shrink:0;width:48px;height:48px;border-radius:10px;background:' + typeColor + '22;display:flex;align-items:center;justify-content:center;font-size:20px">' + typeIcon + '</div>';
+      }
+
+      html += '<div style="flex:1;min-width:0">';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">';
+      html += '<span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:4px;background:' + typeColor + '22;color:' + typeColor + '">' + typeLabel + '</span>';
+      html += '<span style="font-size:10px;color:var(--text-muted)">' + item.id + '</span>';
+      html += '</div>';
+      html += '<div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px">' + item.title + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted);line-height:1.5">' + item.description + '</div>';
+      html += '</div>';
+
+      html += '</div></div>';
+    });
+
+    html += '</div>';
+  });
+
+  // Navigation
+  html += '<div style="display:flex;gap:12px;margin-top:24px">';
+  if (di > 0) {
+    var prevDay = mod.days[di - 1];
+    html += '<div class="next-step-card" onclick="selectDay(' + mi + ',' + (di-1) + ')" style="flex:1;margin:0">';
+    html += '<div class="next-label">Previous</div>';
+    html += '<div class="next-title">\u2190 ' + prevDay.icon + ' ' + (prevDay.day === 0 ? 'Challenge HQ' : 'Day ' + prevDay.day + ': ' + prevDay.title) + '</div>';
+    html += '</div>';
+  }
+  if (di < mod.days.length - 1) {
+    var nextDay = mod.days[di + 1];
+    html += '<div class="next-step-card" onclick="selectDay(' + mi + ',' + (di+1) + ')" style="flex:1;margin:0">';
+    html += '<div class="next-label">Next</div>';
+    html += '<div class="next-title">' + nextDay.icon + ' Day ' + nextDay.day + ': ' + nextDay.title + ' \u2192</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  html += '</div>';
+  main.innerHTML = html;
+  main.scrollTop = 0;
+}
+
 function selectCategory(mi, ci) {
   var mod = MODULES[mi];
   var cat = mod.categories[ci];
@@ -1395,24 +1743,37 @@ function openTemplate(id, titleEnc, level, videoId, mi, ci) {
   html += '<div class="lesson-meta">';
   html += '<span class="meta-tag id">' + id + '</span>';
   html += '<span class="meta-tag level">' + level + '</span>';
-  html += '<span class="meta-tag video">\u25B6 Video</span>';
-  html += '<span class="meta-tag template">\u2B07 Template</span>';
+  var isSkill = id.indexOf('SKILL-') === 0;
+  var isCC = id.indexOf('CC-') === 0;
+  if (videoId) html += '<span class="meta-tag video">\u25B6 Video</span>';
+  if (isSkill) html += '<span class="meta-tag template">\u2B07 Skill File</span>';
+  else html += '<span class="meta-tag template">\u2B07 Template</span>';
   html += '</div>';
 
-  html += '<div class="video-container">';
   if (videoId) {
+    html += '<div class="video-container">';
     html += '<a class="video-thumb" href="https://www.youtube.com/watch?v=' + videoId + '" target="_blank" rel="noopener">';
     html += '<img src="https://img.youtube.com/vi/' + videoId + '/maxresdefault.jpg" alt="' + title + '" onerror="this.src=\'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg\'">';
     html += '<div class="play-btn"></div>';
     html += '</a>';
-  } else {
-    html += '<div class="video-placeholder"><div class="play-icon">\u25B6</div><span>Video available on Skool</span></div>';
+    html += '</div>';
+  } else if (isSkill) {
+    html += '<div style="background:rgba(79,143,255,0.08);border:1px solid rgba(79,143,255,0.2);border-radius:12px;padding:32px;text-align:center;margin-bottom:24px">';
+    html += '<div style="font-size:48px;margin-bottom:12px">\uD83E\uDDE0</div>';
+    html += '<div style="font-size:14px;color:var(--text-muted);margin-bottom:16px">Copy this skill into your <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">.claude/skills</code> directory</div>';
+    html += '<div style="display:inline-block;padding:10px 24px;background:var(--accent);color:#fff;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer">\u2B07 Download Skill File</div>';
+    html += '</div>';
   }
-  html += '</div>';
 
   html += '<div class="content-section"><h2><span class="section-icon">\uD83D\uDCE6</span> Resources</h2>';
   html += '<div class="resource-cards">';
-  html += '<div class="resource-card"><div class="rc-icon">\u2B07</div><div class="rc-label">n8n Template</div><div class="rc-name">' + title + ' \u2014 JSON</div></div>';
+  if (isSkill) {
+    html += '<div class="resource-card"><div class="rc-icon">\uD83E\uDDE0</div><div class="rc-label">Claude Code Skill</div><div class="rc-name">' + title + ' \u2014 .md</div></div>';
+  } else if (isCC) {
+    html += '<div class="resource-card"><div class="rc-icon">\u25B6</div><div class="rc-label">Video Tutorial</div><div class="rc-name">' + title + '</div></div>';
+  } else {
+    html += '<div class="resource-card"><div class="rc-icon">\u2B07</div><div class="rc-label">n8n Template</div><div class="rc-name">' + title + ' \u2014 JSON</div></div>';
+  }
   html += '</div></div>';
 
   html += '<div class="next-step-card" onclick="selectCategory(' + mi + ',' + ci + ')">';
@@ -1429,7 +1790,9 @@ function navigateToModule(mi) {
   var group = document.querySelector('.module-group[data-module="' + mi + '"]');
   if (group && !group.classList.contains('open')) group.classList.add('open');
   var mod = MODULES[mi];
-  if (mod.isSpecial === 'success-stories') {
+  if (mod.isChallenge) {
+    selectDay(mi, 0);
+  } else if (mod.isSpecial === 'success-stories') {
     selectSpecial(mi, 'stories');
   } else if (mod.isSpecial) {
     selectSpecial(mi, mod.isSpecial);
@@ -1475,29 +1838,6 @@ function selectSpecial(mi, section) {
     return;
   }
 
-  if (mod.isSpecial === 'skills') {
-    var html = '<div class="lesson-view">';
-    html += '<div class="lesson-breadcrumb">' + mod.name + '</div>';
-    html += '<h1 class="lesson-title">Claude Code Skills Library</h1>';
-    html += '<p style="color:var(--text-muted);margin-bottom:32px;font-size:15px">Download pre-built Claude Code skills \u2014 prompt templates you can copy into your .claude/skills directory.</p>';
-    html += '<div class="template-grid">';
-    mod.skills.forEach(function(s) {
-      html += '<div class="template-card">';
-      html += '<div style="font-size:24px;margin-bottom:8px">\uD83E\uDDE0</div>';
-      html += '<div class="tc-id">' + s.id + '</div>';
-      html += '<div class="tc-name">' + s.title + '</div>';
-      html += '<div style="font-size:12px;color:var(--text-muted);margin:6px 0 10px;line-height:1.5">' + s.description + '</div>';
-      html += '<div style="display:flex;align-items:center;justify-content:space-between">';
-      html += '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;background:rgba(79,143,255,0.12);color:var(--accent);text-transform:uppercase;letter-spacing:0.5px">' + s.category + '</span>';
-      html += '<span style="font-size:12px;font-weight:600;color:var(--accent);cursor:pointer">\u2B07 Download Skill</span>';
-      html += '</div>';
-      html += '</div>';
-    });
-    html += '</div></div>';
-    main.innerHTML = html;
-    main.scrollTop = 0;
-    return;
-  }
 
   if (mod.isSpecial === 'podcast') {
     var html = '<div class="lesson-view">';
@@ -1586,7 +1926,7 @@ function selectSpecial(mi, section) {
 function renderWelcome() {
   var main = document.getElementById('main-content');
   var totalTemplates = 0;
-  MODULES.forEach(function(m) { if (m.isLibrary) m.categories.forEach(function(c) { totalTemplates += c.templates.length; }); });
+  MODULES.forEach(function(m) { if (m.isLibrary && !m.libraryType) m.categories.forEach(function(c) { totalTemplates += c.templates.length; }); });
 
   var totalLessons = 0;
   MODULES.forEach(function(m) { if (m.lessons) totalLessons += m.lessons.length; });
@@ -1633,8 +1973,8 @@ function renderWelcome() {
   var coreCurriculum = MODULES.filter(function(m) { return m.section === 'core-curriculum'; });
   html += '<div class="roadmap-phase"><h3>Core Curriculum</h3>';
   coreCurriculum.forEach(function(m) {
-    var count = m.lessons ? m.lessons.length : m.isSpecial === 'skills' ? m.skills.length : 0;
-    var label = m.lessons ? 'lessons' : 'skills';
+    var count = m.lessons ? m.lessons.length : m.isChallenge ? m.days.length + ' days, ' + m.days.reduce(function(s,d) { return s + d.sections.reduce(function(ss,sec) { return ss + sec.items.length; }, 0); }, 0) : m.isLibrary ? m.categories.reduce(function(s,c) { return s + c.templates.length; }, 0) : 0;
+    var label = m.lessons ? 'lessons' : m.isChallenge ? 'items' : m.isLibrary ? 'items' : 'items';
     var idx = MODULES.indexOf(m);
     html += '<div class="roadmap-item" onclick="toggleModule(' + idx + ')">';
     html += '<div class="ri-num">' + globalNum + '</div>';
