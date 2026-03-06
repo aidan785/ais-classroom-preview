@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIS Free Classroom — Prototype v2</title>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --surface3: #2e2e2e;
+    --border: #333;
+    --text: #e8e8e8;
+    --text-muted: #999;
+    --text-dim: #666;
+    --accent: #4f8fff;
+    --accent-hover: #6ba1ff;
+    --green: #34d399;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --purple: #a78bfa;
+    --gold: #fbbf24;
+    --sidebar-w: 320px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .sidebar-header h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .sidebar-header .subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .sidebar-header .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 8px;
+  }
+
+  .sidebar-actions {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .tracker-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #1a2d1a 0%, #1a2744 100%);
+    border: 1px solid rgba(79, 143, 255, 0.25);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .tracker-btn:hover {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, #1a2d1a 0%, #1a3055 100%);
+  }
+
+  .tracker-btn .tracker-icon { font-size: 14px; }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+
+  .sidebar-nav::-webkit-scrollbar { width: 6px; }
+  .sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .module-group { margin-bottom: 4px; }
+
+  .module-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
+  }
+
+  .module-header:hover { background: var(--surface2); }
+
+  .module-header .module-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .module-header .module-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .module-header .module-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
+  .module-badge.reward {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--gold);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+  }
+
+  .module-badge.paid {
+    background: rgba(167, 139, 250, 0.15);
+    color: var(--purple);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+  }
+
+  .module-header .module-count {
+    font-size: 11px;
+    color: var(--text-dim);
+    background: var(--surface3);
+    padding: 1px 7px;
+    border-radius: 8px;
+  }
+
+  .module-header .chevron {
+    font-size: 10px;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+  }
+
+  .module-group.open .chevron { transform: rotate(90deg); }
+
+  .module-lessons {
+    display: none;
+    padding: 0 0 4px 0;
+  }
+
+  .module-group.open .module-lessons { display: block; }
+
+  .lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 16px 7px 54px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .lesson-item:hover { background: var(--surface2); color: var(--text); }
+  .lesson-item.active { background: var(--surface3); color: var(--accent); }
+
+  .lesson-item .lesson-num {
+    font-size: 11px;
+    color: var(--text-dim);
+    min-width: 18px;
+    flex-shrink: 0;
+  }
+
+  .lesson-item .lesson-label {
+    flex: 1;
+  }
+
+  .lesson-item .level-pip {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 600;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .level-pip.beginner { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+  .level-pip.beginner-plus { background: rgba(52, 211, 153, 0.15); color: #5ee6b5; }
+  .level-pip.intermediate { background: rgba(79, 143, 255, 0.15); color: var(--accent); }
+  .level-pip.intermediate-plus { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+  .level-pip.advanced { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+  .level-pip.coming-soon { background: rgba(102, 102, 102, 0.2); color: var(--text-dim); }
+
+  .phase-divider {
+    padding: 16px 16px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+  }
+
+  /* ── Main Content ── */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .main::-webkit-scrollbar { width: 8px; }
+  .main::-webkit-scrollbar-track { background: transparent; }
+  .main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .lesson-view {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 48px 80px;
+  }
+
+  .lesson-breadcrumb {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .lesson-breadcrumb span { color: var(--text-muted); }
+
+  .lesson-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+
+  .lesson-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+
+  .meta-tag.id { background: var(--surface3); color: var(--text-muted); }
+  .meta-tag.level { background: #1a2744; color: var(--accent); }
+  .meta-tag.video { background: #1f2d1a; color: var(--green); }
+  .meta-tag.template { background: #2d2a1a; color: var(--orange); }
+  .meta-tag.guide { background: #2a1a2d; color: var(--purple); }
+  .meta-tag.coming-soon { background: #2e2e2e; color: var(--text-dim); border: 1px dashed var(--text-dim); }
+  .meta-tag.reward { background: rgba(251, 191, 36, 0.1); color: var(--gold); }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 32px;
+    border: 1px solid var(--border);
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+
+  .video-thumb {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .video-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s, filter 0.2s;
+  }
+
+  .video-thumb:hover img {
+    transform: scale(1.03);
+    filter: brightness(0.7);
+  }
+
+  .video-thumb .play-btn {
+    position: absolute;
+    width: 72px; height: 50px;
+    background: rgba(255,0,0,0.85);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .video-thumb:hover .play-btn {
+    background: rgba(255,0,0,1);
+    transform: scale(1.08);
+  }
+
+  .play-btn::after {
+    content: '';
+    display: block;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent #fff;
+    margin-left: 3px;
+  }
+
+  .video-placeholder {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    color: var(--text-dim);
+  }
+
+  .video-placeholder .play-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+
+  .video-placeholder span { font-size: 14px; }
+
+  .content-section {
+    margin-bottom: 32px;
+  }
+
+  .content-section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .content-section h2 .section-icon {
+    font-size: 16px;
+  }
+
+  .content-section p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .content-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .content-section ul li {
+    position: relative;
+    padding: 8px 0 8px 24px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .content-section ul li:last-child { border-bottom: none; }
+
+  .content-section ul li::before {
+    content: '\2192';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .content-section.takeaways ul li::before { content: '\2726'; color: var(--green); }
+  .content-section.actions ul li::before { content: '\2610'; color: var(--orange); }
+
+  .callout {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+
+  .callout.proof {
+    border-left-color: var(--green);
+  }
+
+  .callout.reward {
+    border-left-color: var(--gold);
+    background: rgba(251, 191, 36, 0.05);
+  }
+
+  .callout p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .callout strong { color: var(--text); }
+
+  .next-step-card {
+    background: linear-gradient(135deg, #1a2744 0%, #1a1a2e 100%);
+    border: 1px solid rgba(79, 143, 255, 0.2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 32px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .next-step-card:hover { border-color: var(--accent); }
+
+  .next-step-card .next-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .next-step-card .next-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .resource-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .resource-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    transition: border-color 0.2s;
+    cursor: pointer;
+  }
+
+  .resource-card:hover { border-color: var(--accent); }
+
+  .resource-card .rc-icon { font-size: 24px; margin-bottom: 8px; }
+  .resource-card .rc-label { font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
+  .resource-card .rc-name { font-size: 14px; font-weight: 600; color: var(--text); }
+
+  /* ── Welcome/Landing View ── */
+  .welcome-view {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 48px;
+    text-align: center;
+  }
+
+  .welcome-view h1 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 0%, #999 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .welcome-view .welcome-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 16px;
+  }
+
+  .stat-card .stat-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .stat-card .stat-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .roadmap {
+    text-align: left;
+    margin-top: 48px;
+  }
+
+  .roadmap h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .roadmap-phase {
+    margin-bottom: 32px;
+  }
+
+  .roadmap-phase h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .roadmap-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .roadmap-item:hover { border-color: var(--accent); background: var(--surface2); }
+
+  .roadmap-item .ri-num {
+    width: 32px; height: 32px;
+    background: var(--surface3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .roadmap-item .ri-name { font-size: 15px; font-weight: 600; flex: 1; }
+  .roadmap-item .ri-count { font-size: 12px; color: var(--text-dim); }
+  .roadmap-item .ri-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Category headers in template library ── */
+  .category-header {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 32px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .category-header:first-child { margin-top: 0; }
+
+  .template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .template-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .template-card:hover { border-color: var(--accent); }
+
+  .template-card .tc-id { font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
+  .template-card .tc-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .template-card .tc-level { font-size: 12px; color: var(--accent); }
+
+  /* ── Reward banner ── */
+  .reward-banner {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(251, 191, 36, 0.02) 100%);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .reward-banner .reward-icon { font-size: 24px; }
+  .reward-banner .reward-text { flex: 1; }
+  .reward-banner .reward-title { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 2px; }
+  .reward-banner .reward-desc { font-size: 12px; color: var(--text-muted); }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .sidebar { width: 260px; min-width: 260px; }
+    .lesson-view { padding: 24px; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h1>AI Automation Society</h1>
+    <div class="subtitle">Free Classroom</div>
+    <span class="badge">PROTOTYPE v2</span>
+  </div>
+  <div class="sidebar-actions">
+    <button class="tracker-btn" onclick="alert('Download the Progress Tracker spreadsheet to track your 7-Day Challenge completion!')">
+      <span class="tracker-icon">&#128202;</span> Download Progress Tracker
+    </button>
+  </div>
+  <div class="sidebar-nav" id="sidebar-nav"></div>
+</div>
+
+<div class="main" id="main-content"></div>
+
+<script>
+// =====================================================
+// DATA - All modules with new structure
+// =====================================================
+
+const MODULES = [
+  {
+    id: 'start-here',
+    name: 'Start Here',
+    icon: '\uD83D\uDCCD',
+    iconBg: '#2d1a1a',
+    section: 'getting-started',
+    lessons: [
+      {
+        id: 'SH-001', title: 'Community Rules & Guidelines', level: 'Start', videoType: 'loom',
+        hasTemplate: false, hasGuide: false,
+        summary: '<p>Welcome to the AI Automation Society. This is the most important lesson in the entire community because it sets the foundation for how we operate. Watch the Loom walkthrough to understand our community standards, how we treat each other, and what\'s expected of you as a member.</p><p>This isn\'t a passive content library \u2014 it\'s an active community of builders. The rules exist to keep things productive, respectful, and focused so everyone can learn faster and build real things.</p>',
+        takeaways: ['Respect other members \u2014 we\'re all at different stages, and that\'s the point','Keep posts relevant and constructive (no spam, no self-promotion without context)','Use the classroom modules in order \u2014 they\'re designed as a progression','Engage in the community feed to share wins, ask questions, and help others'],
+        nextStep: 'Move to Lesson 2: How to Request Help'
+      },
+      {
+        id: 'SH-002', title: 'How to Request Help', level: 'Start', videoType: 'loom',
+        hasTemplate: false, hasGuide: false,
+        summary: '<p>Every builder gets stuck. The difference between people who stay stuck and people who break through is knowing how to ask the right question. This lesson shows you exactly how to request help inside the community so you get fast, useful answers.</p><p>A good help request includes what you\'re building, what you\'ve tried, where you\'re stuck, and a screenshot or error message. The more specific your question, the faster someone can help you.</p>',
+        takeaways: ['Always include context: what you\'re building, what you\'ve tried, and the exact error','Screenshots and workflow exports save everyone time','Search the community first \u2014 your question may already be answered','Tag the relevant module or topic so the right people see your post'],
+        nextStep: 'Move to Lesson 3: Introduce Yourself'
+      },
+      {
+        id: 'SH-003', title: 'Introduce Yourself', level: 'Start', videoType: 'loom',
+        hasTemplate: false, hasGuide: false,
+        summary: '<p>Before you start building, take 60 seconds to introduce yourself. Tell us who you are, what brought you here, and what you want to build or achieve with AI automation.</p><p>The members who introduce themselves and engage early are consistently the ones who get the most value out of this community.</p>',
+        takeaways: ['Share your background, your goals, and what you\'re most excited to learn','Follow other members who are working on similar things','Your intro is your first impression \u2014 the community will rally behind you','This takes 60 seconds and pays dividends throughout your entire journey here'],
+        nextStep: 'Move to Lesson 4: AI Isn\'t Hard. It\'s Misunderstood.'
+      },
+      {
+        id: 'BN-009', title: 'AI Isn\'t Hard. It\'s Misunderstood.', level: 'Beginner \u2192 Intermediate',
+        youtube: 'ip8FEYOQob0', hasTemplate: false, hasGuide: true,
+        summary: '<p>Most people overcomplicate AI. They chase every new tool, try to build overly complex systems, and burn out before making a dollar. This lesson reframes how you should think about AI automation \u2014 with an emphasis on leverage, simplicity, and process-first thinking.</p><p>The core idea: understand the business problem before you touch any tool. AI automation isn\'t about building the flashiest agent \u2014 it\'s about finding a process that wastes time or money, and eliminating that waste with a simple, reliable workflow.</p>',
+        takeaways: ['AI isn\'t hard \u2014 it\'s misunderstood because people focus on tools instead of problems','Leverage beats complexity: a simple workflow that saves 10 hours/week is worth more than a complex demo','Think process-first: map out what a business actually does before you automate anything','You don\'t need to master every AI tool \u2014 you need to master solving problems with the right tool','Simplicity sells: clients don\'t care about your tech stack, they care about results'],
+        nextStep: 'Move to Lesson 5: How I\'d Learn n8n in 2026'
+      },
+      {
+        id: 'BN-013', title: 'How I\'d Learn n8n in 2026', level: 'Beginner \u2192 Intermediate',
+        youtube: 'Fqeo8q8-nJg', hasTemplate: false, hasGuide: true,
+        summary: '<p>If you\'re starting from zero, this is your roadmap. Nate breaks down exactly how he\'d learn n8n and AI automation today \u2014 what to focus on first, what to skip, and how to progress from basic workflows to monetizable skills.</p><p>The key insight: don\'t jump straight to agents and complex systems. Start with simple workflows, master the core nodes, then layer in AI and agent capabilities once you understand how data flows through n8n.</p>',
+        takeaways: ['Start with workflows, not agents \u2014 learn how data moves through n8n before adding AI','Master the core nodes first (triggers, HTTP, IF/Switch, Set, Code) \u2014 these power 90% of builds','Build real things from Day 1 \u2014 tutorials are only useful if you actually build alongside them','Align your learning with business outcomes \u2014 every skill should move you closer to getting paid','Avoid "tool hopping" \u2014 go deep on n8n + one LLM provider before exploring others'],
+        nextStep: 'Move to Lesson 6: How I\'d Make Money with AI in 2026'
+      },
+      {
+        id: 'BN-008', title: 'How I\'d Make Money with AI in 2026', level: 'Beginner \u2192 Advanced',
+        youtube: 'Q46OLxFshAQ', hasTemplate: false, hasGuide: true,
+        summary: '<p>Now that you know how to think about AI and how to learn the tools, this lesson shows you the financial roadmap. Nate walks through realistic paths for making money with AI automation \u2014 from freelancing simple builds to consulting, agency work, and beyond.</p><p>This is also a transparent explanation of what\'s available for free vs. what\'s in AIS+. The free classroom teaches you everything you need to build and sell. AIS+ accelerates your results with live coaching, advanced strategies, and direct support.</p>',
+        takeaways: ['The path is: Learn \u2192 Build \u2192 Sell small \u2192 Consult \u2192 Scale \u2014 don\'t skip steps','Start by solving real problems for free or cheap to build proof of work','Freelancing AI builds is the fastest path to first income ($500-$2,000 per project)','Consulting is where income scales past $5K/month','You don\'t need an agency \u2014 a single skilled builder can out-earn most teams','ROI-driven selling is everything: show clients the money they\'ll save'],
+        nextStep: 'You\'re ready \u2014 head to Module 2: 7-Day Claude Code Builder Challenge'
+      }
+    ]
+  },
+  {
+    id: '7-day-challenge',
+    name: '7-Day Claude Code Builder Challenge',
+    icon: '\uD83D\uDE80',
+    iconBg: '#1a2d1a',
+    section: 'core-curriculum',
+    hasReward: true,
+    lessons: [
+      {
+        id: 'CHALLENGE-000', title: 'Challenge Rules & Overview', level: 'Start', videoType: 'none',
+        hasTemplate: false, hasGuide: false, isOverview: true,
+        summary: '<p>Welcome to the 7-Day Claude Code Builder Challenge \u2014 7 days of hands-on building that takes you from your first AI-built workflow to self-healing production systems.</p><p>Every day you\'ll build something real with Claude Code + n8n. The difficulty ramps from beginner to advanced. Complete all 7 days and unlock exclusive rewards.</p>',
+        takeaways: ['One build per day for 7 consecutive days','Each day builds on skills from previous days \u2014 follow the order','Share your daily build in the community to stay accountable','Download the Progress Tracker to check off each day','Complete all 7 days to unlock challenge rewards'],
+        actions: ['Download the Progress Tracker spreadsheet','Read through the full 7-day outline so you know what\'s coming','Set aside 1-2 hours per day for the next 7 days','Introduce yourself in the community if you haven\'t already'],
+        resources: [{name: 'Challenge Progress Tracker', type: 'guide'}, {name: 'Challenge Rewards Preview', type: 'guide'}],
+        nextStep: 'Start Day 1: Setup & Your First AI-Built Workflow'
+      },
+      {
+        id: 'CC-001', title: 'Day 1: Setup & Your First AI-Built Workflow', level: 'Beginner',
+        levelKey: 'beginner',
+        youtube: 'B6k_vAjndMo', hasTemplate: true, hasGuide: false,
+        tools: 'Claude Code, n8n',
+        summary: '<p>Day 1 is about getting set up and experiencing the power of building with AI. You\'ll install and configure Claude Code, connect it to n8n, and build your very first AI-generated workflow \u2014 entirely through natural language instructions.</p><p>By the end of today, you\'ll understand how Claude Code works as a development partner and have a working workflow deployed in n8n. This is the foundation everything else builds on.</p>',
+        takeaways: ['<strong>Claude Code</strong> acts as your AI development partner \u2014 describe what you want, and it builds the workflow','<strong>Natural language to workflow</strong> is the core skill: learn how to describe automations clearly','<strong>Setup once, build forever</strong> \u2014 today\'s configuration is reused every remaining day'],
+        actions: ['Install and configure Claude Code','Build your first AI-generated n8n workflow','Test the workflow end-to-end','Share your Day 1 build in the community'],
+        nextStep: 'Day 2: Build an AI Email Agent'
+      },
+      {
+        id: 'CC-001+FT-009', title: 'Day 2: Build an AI Email Agent', level: 'Beginner',
+        levelKey: 'beginner',
+        youtube: 'HN0oWxbM', hasTemplate: true, hasGuide: true,
+        tools: 'Claude Code, n8n, Gmail, OpenRouter, Claude/GPT',
+        summary: '<p>Day 2 combines Claude Code with a real business use case \u2014 email automation. You\'ll use Claude Code to build an AI-powered inbox agent that reads, classifies, and drafts responses to your emails automatically.</p><p>This introduces you to the pattern of using Claude Code to rapidly prototype automations that have immediate business value. Email is the #1 sellable use case in AI automation.</p>',
+        takeaways: ['<strong>Claude Code accelerates builds</strong> \u2014 what might take hours manually takes minutes with AI-assisted development','<strong>Email automation is the #1 sellable use case</strong> \u2014 nearly every business has email workflows to automate','<strong>AI classification + routing</strong> turns unstructured emails into structured, actionable workflows'],
+        actions: ['Use Claude Code to build the email agent','Test with at least 5 real emails from your inbox','Add a custom classification category','Share your Day 2 build in the community'],
+        nextStep: 'Day 3: Master the Claude Code Framework'
+      },
+      {
+        id: 'CC-003', title: 'Day 3: Master the Claude Code Framework', level: 'Beginner+',
+        levelKey: 'beginner-plus',
+        youtube: 'saggDHHnmtQ', hasTemplate: true, hasGuide: true,
+        tools: 'Claude Code',
+        summary: '<p>Today is about mastering the tool itself. Instead of building one specific workflow, you\'ll learn the full Claude Code framework \u2014 the features, shortcuts, prompt patterns, and techniques that handle 95% of all use cases.</p><p>Think of this as learning your vocabulary before writing sentences. After today, you\'ll be dramatically faster and more effective with Claude Code for every remaining day of the challenge.</p>',
+        takeaways: ['<strong>Prompt patterns matter</strong> \u2014 specific techniques consistently produce better Claude Code output','<strong>Iterative building</strong> \u2014 start simple, then layer complexity in follow-up requests','<strong>Know the limits</strong> \u2014 understanding what Claude Code can and can\'t do makes you faster'],
+        actions: ['Complete the full Claude Code mastery walkthrough','Practice at least 3 different prompt patterns','Build a quick workflow using each technique','Save your notes \u2014 this is reference material for every future build'],
+        resources: [{name: 'Claude Code Reference Guide', type: 'guide'}],
+        nextStep: 'Day 4: From Workflow to Web App'
+      },
+      {
+        id: 'CC-002', title: 'Day 4: From Workflow to Web App', level: 'Intermediate',
+        levelKey: 'intermediate',
+        youtube: 'OCO3aq3G0mk', hasTemplate: false, hasGuide: false,
+        tools: 'Claude Code, n8n, Web Technologies',
+        summary: '<p>Today you break out of the n8n canvas and build something users can interact with directly. Using Claude Code, you\'ll transform a workflow into a web application \u2014 complete with a frontend interface.</p><p>This is the "Build ANYTHING" lesson. You\'ll see how Claude Code can generate not just workflows, but full applications that combine n8n backends with user-facing frontends. This is where your builds start feeling like real products.</p>',
+        takeaways: ['<strong>Workflows can become products</strong> \u2014 adding a frontend makes your automation sellable as a standalone tool','<strong>Claude Code generates full apps</strong>, not just n8n flows \u2014 understand the full scope of what\'s possible','<strong>Client-ready output</strong> \u2014 a web interface turns an "automation" into a "solution" that clients pay premium for'],
+        actions: ['Build the full workflow-to-web-app project with Claude Code','Test the frontend end-to-end','Experiment with customizing the UI','Share your Day 4 build \u2014 screenshot the web app'],
+        nextStep: 'Day 5: Build a RAG Agent'
+      },
+      {
+        id: 'CC-002+RAG', title: 'Day 5: Build a RAG Agent', level: 'Intermediate',
+        levelKey: 'intermediate',
+        youtube: 'QojPKL96Dx4', hasTemplate: true, hasGuide: true,
+        tools: 'Claude Code, n8n, Pinecone/Supabase, OpenAI',
+        summary: '<p>Today you combine Claude Code with one of the highest-value skills in AI automation: RAG (Retrieval-Augmented Generation). You\'ll build an agent that answers questions based on your own documents, not just the AI\'s training data.</p><p>RAG agents are behind custom chatbots, internal knowledge bases, and document Q&A systems. Using Claude Code to build them accelerates what would normally be a complex multi-hour setup into a streamlined build process.</p>',
+        takeaways: ['<strong>RAG = Retrieval-Augmented Generation</strong> \u2014 the AI retrieves relevant info from your documents before responding','<strong>Vector databases</strong> store documents as embeddings that AI can search semantically','<strong>RAG is one of the highest-value skills</strong> you can offer clients \u2014 every business has documents that could power an intelligent chatbot'],
+        actions: ['Use Claude Code to build the RAG agent pipeline','Ingest at least one real document','Test with 5 questions and note accuracy','Share your Day 5 build in the community'],
+        nextStep: 'Day 6: The AI Workflow Generator'
+      },
+      {
+        id: 'FT-032+CC', title: 'Day 6: The AI Workflow Generator', level: 'Intermediate+',
+        levelKey: 'intermediate-plus',
+        youtube: 'Ik8OHT3w4pE', hasTemplate: true, hasGuide: false,
+        tools: 'Claude Code, n8n, OpenAI',
+        summary: '<p>Today is meta: you\'re building an AI agent that builds other n8n workflows. Combining the n8n Developer Agent template with your Claude Code skills, you\'ll create a system that generates, validates, and deploys workflows from natural language descriptions.</p><p>This is the culmination of everything you\'ve learned about Claude Code \u2014 now packaged as a reusable tool. This is also an incredibly sellable product: businesses pay premium for tools that let non-technical people create their own automations.</p>',
+        takeaways: ['<strong>Meta-building</strong> \u2014 an AI that builds automations is one of the most powerful things you can create','<strong>Combining templates with Claude Code skills</strong> produces results neither could achieve alone','<strong>This is a sellable product</strong> \u2014 companies pay $5K-$25K+ for custom workflow generation tools'],
+        actions: ['Build the workflow generator using Claude Code + the n8n Developer Agent template','Generate at least 3 different workflows through your tool','Test and validate each generated workflow','Share your Day 6 build \u2014 this is portfolio-worthy'],
+        nextStep: 'Day 7: Self-Healing Workflows (Capstone)'
+      },
+      {
+        id: 'CC-004', title: 'Day 7: Self-Healing Workflows \u2014 Capstone', level: 'Advanced',
+        levelKey: 'advanced',
+        youtube: 'uUEa6K-FLB8', hasTemplate: false, hasGuide: true,
+        tools: 'Claude Code, n8n, Error Detection Systems',
+        summary: '<p>This is your capstone build. Today you construct self-healing n8n workflows \u2014 systems that detect their own errors and use Claude Code to automatically diagnose, fix, and redeploy themselves.</p><p>You\'ve gone from setup to self-healing systems in 7 days. This capstone demonstrates the most advanced production-grade pattern: autonomous error recovery. This is the kind of architecture that professionals charge $10K-$25K+ to build and is a powerful selling point for premium client projects.</p>',
+        takeaways: ['<strong>Self-healing workflows</strong> detect errors and automatically repair themselves \u2014 the pinnacle of production-grade automation','<strong>Autonomous error recovery</strong> reduces maintenance costs and increases reliability dramatically','<strong>This is a premium selling point</strong> \u2014 clients pay top dollar for systems that don\'t break'],
+        actions: ['Build the self-healing workflow system','Intentionally break a workflow and verify it auto-recovers','Document the error detection and repair patterns','Post your Day 7 completion in the community','Look back at Day 1: compare your first workflow to today\'s self-healing system'],
+        resources: [{name: 'Self-Healing Patterns Guide', type: 'guide'}],
+        nextStep: 'Challenge Complete! Explore Claude Code Mastery for deep dives, or the Template Library for more builds.'
+      }
+    ]
+  },
+  {
+    id: 'claude-code',
+    name: 'Claude Code Mastery',
+    icon: '\u26A1',
+    iconBg: '#2a1a2d',
+    section: 'core-curriculum',
+    lessons: [
+      {
+        id: 'CC-001-deep', title: 'Build n8n Flows with Claude Code \u2014 Deep Dive', level: 'Beginner \u2192 Intermediate',
+        youtube: 'B6k_vAjndMo', hasTemplate: true, hasGuide: false,
+        summary: '<p>A comprehensive deep dive into using Claude Code as a power tool for building n8n workflows. While the challenge gives you the hands-on experience, this lesson provides the complete reference \u2014 covering every technique, edge case, and best practice for generating workflows with Claude Code.</p><p>Come here when you want to go deeper on any concept from Day 1 of the challenge, or when you\'re building workflows on your own and need a reference.</p>',
+        takeaways: ['Claude Code can generate complete n8n workflow JSON from natural language descriptions','Start with simple workflows to understand how Claude Code interprets your instructions','Review and test every generated workflow before deploying \u2014 AI-generated code needs human verification'],
+        nextStep: 'Move to Lesson 2: Build ANYTHING Deep Dive'
+      },
+      {
+        id: 'CC-002-deep', title: 'Build ANYTHING with n8n & Claude Code \u2014 Deep Dive', level: 'Beginner \u2192 Advanced',
+        youtube: 'OCO3aq3G0mk', hasTemplate: false, hasGuide: false,
+        summary: '<p>Advanced techniques for using Claude Code to build complex n8n workflows and full applications. This is the complete reference for the techniques introduced in Challenge Day 4, covering multi-step automations, error handling, frontend generation, and integration patterns.</p>',
+        takeaways: ['Break complex workflows into smaller components for better Claude Code output','Use iterative prompting: start simple, then add complexity in follow-up requests','Claude Code excels at boilerplate \u2014 let it handle the repetitive parts while you focus on logic'],
+        nextStep: 'Move to Lesson 3: Master 95% of Claude Code'
+      },
+      {
+        id: 'CC-003-ref', title: 'Master 95% of Claude Code \u2014 Reference Guide', level: 'Beginner \u2192 Intermediate',
+        youtube: 'saggDHHnmtQ', hasTemplate: true, hasGuide: true,
+        summary: '<p>The comprehensive reference guide to mastering Claude Code \u2014 covering the features, shortcuts, and prompt patterns that handle 95% of real-world use cases. This is the complete version of what you learned on Challenge Day 3.</p><p>Bookmark this lesson. You\'ll come back to it repeatedly as your builds get more complex.</p>',
+        takeaways: ['Focus on the core features that matter most for daily workflow building','Learn the prompt patterns that consistently produce the best output','Understand Claude Code\'s limitations so you know when to build manually'],
+        nextStep: 'Move to Lesson 4: Self-Healing Workflows Reference'
+      },
+      {
+        id: 'CC-004-ref', title: 'Self-Healing n8n Workflows \u2014 Reference', level: 'Intermediate \u2192 Advanced',
+        youtube: 'uUEa6K-FLB8', hasTemplate: false, hasGuide: true,
+        summary: '<p>The full reference for building self-healing n8n workflows \u2014 systems that detect errors and use Claude Code to automatically fix themselves. This is the deep-dive companion to Challenge Day 7.</p><p>Covers advanced error detection patterns, automated repair strategies, and production deployment considerations.</p>',
+        takeaways: ['Self-healing workflows reduce maintenance and increase reliability','Error detection + automated repair = production-grade automation','This pattern is a strong selling point for premium client projects'],
+        nextStep: 'Coming soon: Nate\'s 6-Hour Claude Code Course'
+      },
+      {
+        id: 'CC-TBD', title: 'Nate\'s 6-Hour Claude Code Course', level: 'All Levels',
+        youtube: null, hasTemplate: false, hasGuide: false, comingSoon: true,
+        summary: '<p>A comprehensive 6-hour deep dive into Claude Code is currently in production. When released, it will be broken into individual lessons covering everything from basics to advanced techniques.</p><p>Expected soon. Stay tuned.</p>',
+        takeaways: ['Full curriculum covering beginner to advanced Claude Code usage','Individual lessons will be slotted into this module','Check back soon or watch the community announcements'],
+        nextStep: 'Explore the Template Library while you wait'
+      }
+    ]
+  },
+  {
+    id: 'skills-library',
+    name: 'Claude Code Skills Library',
+    icon: '\uD83E\uDDE0',
+    iconBg: '#1a2d2d',
+    section: 'core-curriculum',
+    isSpecial: 'skills',
+    skills: [
+      { id: 'SKILL-001', title: 'n8n Workflow Generator', description: 'Generate complete n8n workflows from natural language descriptions. Includes node selection, connection logic, and error handling patterns.', category: 'n8n' },
+      { id: 'SKILL-002', title: 'n8n Workflow Debugger', description: 'Diagnose and fix broken n8n workflows. Analyzes error logs, identifies root causes, and applies targeted repairs.', category: 'n8n' },
+      { id: 'SKILL-003', title: 'RAG Pipeline Builder', description: 'Build retrieval-augmented generation systems. Handles document ingestion, embedding generation, vector storage, and query pipelines.', category: 'AI' },
+      { id: 'SKILL-004', title: 'API Integration Builder', description: 'Create API integrations with authentication, error handling, rate limiting, and data transformation.', category: 'Development' },
+      { id: 'SKILL-005', title: 'Web App Generator', description: 'Generate full-stack web applications with React frontends connected to n8n workflow backends.', category: 'Development' },
+      { id: 'SKILL-006', title: 'Self-Healing System Setup', description: 'Configure autonomous error detection, diagnosis, and repair for n8n workflow instances.', category: 'n8n' }
+    ]
+  },
+  {
+    id: 'template-library',
+    name: 'n8n Template Library',
+    icon: '\uD83D\uDCDA',
+    iconBg: '#1a1a2d',
+    section: 'library-resources',
+    isLibrary: true,
+    categories: [
+      {
+        name: 'AI Content & Media Creation',
+        templates: [
+          { id: 'FT-008', title: 'UGC Ads (Veo & Sora)', level: 'Intermediate \u2192 Advanced', youtube: 'AYsg5gAMWyo' },
+          { id: 'FT-010', title: 'Create Anything with Sora 2', level: 'Beginner \u2192 Intermediate', youtube: 'Vm8QOo9MiC4' },
+          { id: 'FT-015', title: 'Nano Photoshop Agent', level: 'Intermediate', youtube: '7UNsK9LoORo' },
+          { id: 'FT-018', title: 'Ultimate Media Agent Army', level: 'Advanced', youtube: 'jBanaNBY-sM' },
+          { id: 'FT-031', title: 'Glass Fruit ASMR Shorts', level: 'Intermediate', youtube: 'RvuPRX-b7Lc' },
+          { id: 'FT-037', title: 'Famous Brands Shorts', level: 'Intermediate \u2192 Advanced', youtube: 'BcfjIBd49C8' },
+          { id: 'FT-040', title: 'AI Versus Viral Shorts', level: 'Intermediate \u2192 Advanced', youtube: 'jkEEVYFzT1U' },
+          { id: 'FT-042', title: 'Product Videos', level: 'Intermediate', youtube: null },
+          { id: 'FT-043', title: 'AI Marketing Team', level: 'Intermediate \u2192 Advanced', youtube: 'ldETapkr8Hg' },
+          { id: 'FT-044', title: 'OpenAI Image Gen LinkedIn Post', level: 'Beginner \u2192 Intermediate', youtube: 'ACkHpQQnfxQ' },
+          { id: 'FT-036', title: 'HeyGen Avatar', level: 'Beginner \u2192 Intermediate', youtube: 'llm60n03x3c' }
+        ]
+      },
+      {
+        name: 'Lead Gen & Outreach',
+        templates: [
+          { id: 'FT-001', title: 'Gamma Proposals', level: 'Intermediate', youtube: 'KGXFkUlBHxw' },
+          { id: 'FT-002', title: 'Outbound Lead Qualifier (Voice Agent)', level: 'Advanced', youtube: 'BO-jFbN4p8Y' },
+          { id: 'FT-017', title: 'AI Newsletter System', level: 'Intermediate', youtube: 'pxzo2lXhWJE' },
+          { id: 'FT-067', title: 'Automated Newsletters with Research Agents', level: 'Intermediate \u2192 Advanced', youtube: 'HUdm3NXwk-w' },
+          { id: 'FT-070', title: 'Twitter/X Scraper', level: 'Intermediate', youtube: 'lEo7IAgj0UY' }
+        ]
+      },
+      {
+        name: 'RAG & Knowledge Systems',
+        templates: [
+          { id: 'FT-011', title: 'RAG Pipelines', level: 'Beginner \u2192 Intermediate', youtube: '5uw1wE6niGc' },
+          { id: 'FT-014', title: 'Pinecone Assistant', level: 'Beginner \u2192 Intermediate', youtube: 'QojPKL96Dx4' },
+          { id: 'FT-024', title: 'RAG Agent', level: 'Intermediate', youtube: 'cCD303XsUjI' },
+          { id: 'FT-026', title: 'ZEP Memory', level: 'Intermediate \u2192 Advanced', youtube: 'kNsX2qu8jHY' },
+          { id: 'FT-029', title: 'RAG Reranking', level: 'Intermediate \u2192 Advanced', youtube: 'xWhX61651H8' },
+          { id: 'FT-064', title: 'Voice RAG Agent', level: 'Intermediate \u2192 Advanced', youtube: 'pJYm7MOyMH0' }
+        ]
+      },
+      {
+        name: 'Voice & Conversational Agents',
+        templates: [
+          { id: 'FT-021', title: 'Voice Workflows', level: 'Intermediate', youtube: 'qJRFu88HUio' },
+          { id: 'FT-064', title: 'Voice RAG Agent', level: 'Intermediate \u2192 Advanced', youtube: 'pJYm7MOyMH0' },
+          { id: 'FT-065', title: 'Voice Email Agent', level: 'Beginner \u2192 Intermediate', youtube: 'Je4EAscnKK0' }
+        ]
+      },
+      {
+        name: 'Productivity & Business Automation',
+        templates: [
+          { id: 'FT-009', title: 'From Zero to Inbox Agent', level: 'Beginner+', youtube: 'HN0oWxbF2bM' },
+          { id: 'FT-013', title: 'Data Tables', level: 'Beginner \u2192 Intermediate', youtube: 'QCjMBOEhpLE' },
+          { id: 'FT-028', title: 'Resume Screening', level: 'Intermediate', youtube: 'M0s6O8xtVUE' },
+          { id: 'FT-041', title: 'Log Agent Outputs', level: 'Intermediate', youtube: 'vVdS-ZEFf50' },
+          { id: 'FT-045', title: 'JARVIS (Multi-Tool Personal Assistant)', level: 'Intermediate \u2192 Advanced', youtube: 'KUvSzvFeZls' },
+          { id: 'FT-063', title: 'Invoice AI Agent', level: 'Beginner \u2192 Intermediate', youtube: 'skHe-qIRkM4' },
+          { id: 'FT-066', title: 'Technical Analyst AI Agent', level: 'Intermediate', youtube: 'dooXxhGy5Ow' }
+        ]
+      },
+      {
+        name: 'Advanced n8n Techniques',
+        templates: [
+          { id: 'FT-005', title: 'Nano Banana Pro', level: 'Intermediate', youtube: 'iUgAVUcv9r0' },
+          { id: 'FT-006', title: 'Gemini 3 Pro', level: 'Intermediate', youtube: 'Vb1SwBAn9cQ' },
+          { id: 'FT-012', title: 'Base44', level: 'Beginner', youtube: 'tFFKuq2t0rI' },
+          { id: 'FT-016', title: 'Ticket Tagging Evaluation', level: 'Intermediate', youtube: '-zFd1nPn6U0' },
+          { id: 'FT-019', title: 'Blotato Posting', level: 'Beginner \u2192 Intermediate', youtube: 'QovlUE_VlWQ' },
+          { id: 'FT-023', title: 'YouTube Chat Metadata', level: 'Intermediate', youtube: 'lnm0PMi-4mE' },
+          { id: 'FT-025', title: 'Webhook Protection', level: 'Beginner \u2192 Intermediate', youtube: '3FfCRbq3XMs' },
+          { id: 'FT-027', title: 'Parallelization & Subworkflows', level: 'Intermediate', youtube: 'qNW9KaLe1nY' },
+          { id: 'FT-030', title: 'YouTube Strategist', level: 'Intermediate \u2192 Advanced', youtube: 'Ch-AWxvX2Jc' },
+          { id: 'FT-033', title: 'Multi-Agent System Benefits', level: 'Beginner \u2192 Intermediate', youtube: '0iUNOmeU7O4' },
+          { id: 'FT-034', title: 'Ultimate Browser Agent', level: 'Intermediate \u2192 Advanced', youtube: 'ar37oypyATQ' },
+          { id: 'FT-035', title: 'Firecrawl Search', level: 'Intermediate', youtube: '3Pim6uCASSE' },
+          { id: 'FT-038', title: 'Apify', level: 'Beginner \u2192 Intermediate', youtube: 'gZ_RLC25gCw' },
+          { id: 'FT-039', title: 'n8n Hacks', level: 'Beginner \u2192 Advanced', youtube: 'zMy5yoA-ub8' },
+          { id: 'FT-068', title: '4 Agentic Frameworks', level: 'Intermediate', youtube: 'nSQnJoqK4DQ' },
+          { id: 'FT-004', title: 'Gemini File Search', level: 'Intermediate', youtube: 'irg-2IfAjpo' }
+        ]
+      },
+      {
+        name: 'Challenge Alumni (Old 7-Day Challenge)',
+        templates: [
+          { id: 'FT-071', title: 'Your First AI Agent (Weather Bot)', level: 'Beginner', youtube: 'otUBuV1foLY' },
+          { id: 'FT-073', title: 'AI Email Agent', level: 'Beginner', youtube: 'YFrej2oSldo' },
+          { id: 'FT-003', title: 'Master the 17 Core n8n Nodes', level: 'Beginner+', youtube: 'D9MIGseFB3g' },
+          { id: 'FT-072', title: 'RAG Chatbot AI Agent', level: 'Beginner \u2192 Intermediate', youtube: '6w0MshwAqBQ' },
+          { id: 'FT-069', title: 'Human-in-the-Loop Calendar Agent', level: 'Intermediate', youtube: 'z-gDDajSSNE' },
+          { id: 'FT-022', title: 'Multi-Agent Swarm', level: 'Intermediate+', youtube: 'vpyllOeLhs4' },
+          { id: 'FT-007', title: 'Guardrails (Safety & Filtering)', level: 'Intermediate', youtube: 'oWdJMJp2HgM' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'podcast',
+    name: 'Nate Herk Podcast',
+    icon: '\uD83C\uDFA7',
+    iconBg: '#2d2d1a',
+    section: 'library-resources',
+    isSpecial: 'podcast',
+    episodes: [
+      { id: 'EP-001', title: 'Coming Soon', description: 'New episodes are in production. Check back soon or follow Nate for updates.', date: null }
+    ]
+  },
+  {
+    id: 'discount-codes',
+    name: 'Discount Codes',
+    icon: '\uD83C\uDFF7\uFE0F',
+    iconBg: '#2d1a1a',
+    section: 'library-resources',
+    isSpecial: 'discounts',
+    discounts: [
+      { id: 'DC-002', title: 'Airtop', url: 'https://www.airtop.ai/', desc: 'AI-powered browser automation' },
+      { id: 'DC-003', title: 'Apify', url: 'https://apify.com/?fpr=nate', desc: 'Web scraping & automation platform' },
+      { id: 'DC-004', title: 'Blotato', url: 'https://www.blotato.com/?ref=nate', desc: 'Social media management' },
+      { id: 'DC-005', title: 'Firecrawl', url: 'https://www.firecrawl.dev/', desc: 'Web crawling for LLMs' },
+      { id: 'DC-006', title: 'Hostinger VPS', url: 'https://www.hostinger.com/self-hosted-n8n', desc: 'Self-hosted n8n hosting' },
+      { id: 'DC-007', title: 'Lindy', url: 'https://chat.lindy.ai/', desc: 'AI assistant platform' },
+      { id: 'DC-008', title: 'Twitter Scraper API', url: 'https://twitterapi.io/?ref=NateHerkelman', desc: 'Twitter/X data extraction' },
+      { id: 'DC-009', title: 'Poppy AI', url: 'https://getpoppy.ai/?affiliate=nateherk', desc: 'AI content tools' }
+    ]
+  },
+  {
+    id: 'community',
+    name: 'Community Discussions',
+    icon: '\uD83E\uDD1D',
+    iconBg: '#2d2d1a',
+    section: 'library-resources',
+    isSpecial: 'discussions',
+    discussions: [
+      { id: 'CD-001', title: 'How are you hosting n8n?' },
+      { id: 'CD-002', title: 'Your first time using AI' },
+      { id: 'CD-003', title: 'Should you learn n8n in 2026?' },
+      { id: 'CD-004', title: 'What time of day do you build?' },
+      { id: 'CD-005', title: 'Client acquisition \u2014 what scares you most?' }
+    ]
+  },
+  {
+    id: 'success-stories',
+    name: 'AIS+ Success Stories',
+    icon: '\uD83C\uDFC6',
+    iconBg: '#1a2d1a',
+    section: 'ais-plus',
+    isSpecial: 'success-stories',
+    stories: [
+      { id: 'SS-001', title: 'Aidan Finnegan', amount: '$14,000', desc: 'Signed a $14,000 client contract after completing the Get Your First Client course.', skoolUrl: 'https://www.skool.com/ai-automation-society/classroom/7f8b31ca?md=0adb4d4c828f4f60b8ce212d5539f895' },
+      { id: 'SS-002', title: 'Mike Aheirwe', amount: '$6,000', desc: 'Closed his first $6,000 client win using the value-based pricing framework.', skoolUrl: 'https://www.skool.com/ai-automation-society/classroom/7f8b31ca?md=4684b4003d91456ea4066c245c8d127c' },
+      { id: 'SS-003', title: 'Jose M Lopes', amount: '$500', desc: 'Landed his first $500 client audit within weeks of joining.', skoolUrl: 'https://www.skool.com/ai-automation-society/classroom/7f8b31ca?md=d286d8615f1743769380589baa364af5' },
+      { id: 'SS-004', title: 'Malek Kilani', amount: 'First Client', desc: 'Got his first paying client using warm outreach from the AIS+ templates.', skoolUrl: 'https://www.skool.com/ai-automation-society/classroom/7f8b31ca?md=2b8553832d73468ba1ac65efad26a08e' }
+    ]
+  },
+  {
+    id: 'ais-plus',
+    name: 'Unlock Exclusive Content',
+    icon: '\u2B50',
+    iconBg: '#2d1a2a',
+    section: 'ais-plus',
+    isPaid: true,
+    isSpecial: 'upsell',
+    content: {
+      title: 'Ready to Go Deeper?',
+      description: 'You\'ve completed the free curriculum \u2014 you can build AI automations with Claude Code and you know the path to monetization. AIS+ is the next level: live calls with Nate, advanced strategies, direct community access, and the paid Client Challenge that walks you through landing and closing your first (or next) high-ticket client.',
+      features: ['Weekly live coaching calls with Nate','Advanced deal teardowns and strategy sessions','The paid 7-Day AI Client Challenge','Direct access to other earning members','Priority support on your builds and client projects','Exclusive templates and advanced workflows']
+    }
+  }
+];
+
+// =====================================================
+// RENDER ENGINE
+// =====================================================
+
+const SECTION_LABELS = {
+  'getting-started': 'Getting Started',
+  'core-curriculum': 'Core Curriculum',
+  'library-resources': 'Library & Resources',
+  'ais-plus': 'AIS+ Membership'
+};
+
+let currentModule = null;
+let currentLesson = null;
+
+function extractVideoId(url) {
+  if (!url) return null;
+  const match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : url.length === 11 ? url : null;
+}
+
+function getLevelPipClass(level) {
+  if (!level) return '';
+  const l = level.toLowerCase();
+  if (l === 'advanced') return 'advanced';
+  if (l.includes('intermediate+') || l === 'intermediate+') return 'intermediate-plus';
+  if (l.includes('intermediate')) return 'intermediate';
+  if (l.includes('beginner+') || l === 'beginner+') return 'beginner-plus';
+  if (l.includes('beginner')) return 'beginner';
+  return '';
+}
+
+function getLevelPipLabel(level) {
+  if (!level) return '';
+  const l = level.toLowerCase();
+  if (l === 'advanced') return 'ADV';
+  if (l === 'intermediate+' || l.includes('intermediate+')) return 'INT+';
+  if (l.includes('intermediate')) return 'INT';
+  if (l === 'beginner+' || l.includes('beginner+')) return 'BEG+';
+  if (l.includes('beginner')) return 'BEG';
+  return '';
+}
+
+function renderSidebar() {
+  var nav = document.getElementById('sidebar-nav');
+  var html = '';
+  var lastSection = '';
+
+  MODULES.forEach(function(mod, mi) {
+    if (mod.section !== lastSection) {
+      html += '<div class="phase-divider">' + SECTION_LABELS[mod.section] + '</div>';
+      lastSection = mod.section;
+    }
+
+    var lessonCount = mod.lessons ? mod.lessons.length :
+                      mod.isLibrary ? mod.categories.reduce(function(s,c) { return s + c.templates.length; }, 0) :
+                      mod.isSpecial === 'discussions' ? mod.discussions.length :
+                      mod.isSpecial === 'skills' ? mod.skills.length :
+                      mod.isSpecial === 'podcast' ? mod.episodes.length :
+                      mod.isSpecial === 'discounts' ? mod.discounts.length :
+                      mod.isSpecial === 'success-stories' ? mod.stories.length :
+                      1;
+
+    html += '<div class="module-group" data-module="' + mi + '">';
+    html += '<div class="module-header" onclick="toggleModule(' + mi + ')">';
+    html += '<div class="module-icon" style="background:' + mod.iconBg + '">' + mod.icon + '</div>';
+    html += '<div class="module-name">' + mod.name + '</div>';
+
+    if (mod.hasReward) {
+      html += '<span class="module-badge reward">\uD83C\uDFC6 Rewards</span>';
+    }
+    if (mod.isPaid) {
+      html += '<span class="module-badge paid">PAID</span>';
+    }
+
+    html += '<div class="module-count">' + lessonCount + '</div>';
+    html += '<div class="chevron">\u25B6</div>';
+    html += '</div>';
+    html += '<div class="module-lessons">';
+
+    if (mod.lessons) {
+      mod.lessons.forEach(function(lesson, li) {
+        var levelCls = lesson.levelKey ? lesson.levelKey : getLevelPipClass(lesson.level);
+        var levelLabel = lesson.levelKey ? getLevelPipLabel(lesson.level) : '';
+
+        html += '<div class="lesson-item" data-module="' + mi + '" data-lesson="' + li + '" onclick="selectLesson(' + mi + ',' + li + ')">';
+        html += '<span class="lesson-num">' + (lesson.isOverview ? '0' : li) + '</span>';
+        html += '<span class="lesson-label">' + lesson.title + '</span>';
+
+        if (lesson.comingSoon) {
+          html += '<span class="level-pip coming-soon">SOON</span>';
+        } else if (lesson.levelKey && levelLabel) {
+          html += '<span class="level-pip ' + levelCls + '">' + levelLabel + '</span>';
+        }
+
+        html += '</div>';
+      });
+    } else if (mod.isLibrary) {
+      mod.categories.forEach(function(cat, ci) {
+        html += '<div class="lesson-item" data-module="' + mi + '" data-cat="' + ci + '" onclick="selectCategory(' + mi + ',' + ci + ')" style="font-weight:600;color:var(--text)">';
+        html += '<span class="lesson-num">' + cat.templates.length + '</span> ' + cat.name;
+        html += '</div>';
+      });
+    } else if (mod.isSpecial === 'skills') {
+      html += '<div class="lesson-item" onclick="selectSpecial(' + mi + ',\'skills\')"><span class="lesson-num">' + mod.skills.length + '</span> Skills Available</div>';
+    } else if (mod.isSpecial === 'podcast') {
+      html += '<div class="lesson-item" onclick="selectSpecial(' + mi + ',\'podcast\')"><span class="lesson-num">' + mod.episodes.length + '</span> Episodes</div>';
+    } else if (mod.isSpecial === 'discounts') {
+      html += '<div class="lesson-item" onclick="selectSpecial(' + mi + ',\'discounts\')"><span class="lesson-num">' + mod.discounts.length + '</span> Partner Codes</div>';
+    } else if (mod.isSpecial === 'discussions') {
+      html += '<div class="lesson-item" onclick="selectSpecial(' + mi + ',\'discussions\')"><span class="lesson-num">' + mod.discussions.length + '</span> Discussions</div>';
+    } else if (mod.isSpecial === 'success-stories') {
+      html += '<div class="lesson-item" onclick="selectSpecial(' + mi + ',\'stories\')"><span class="lesson-num">' + mod.stories.length + '</span> Member Stories</div>';
+    } else if (mod.isSpecial === 'upsell') {
+      html += '<div class="lesson-item" onclick="selectSpecial(' + mi + ',\'upsell\')"><span class="lesson-num">\u2192</span> What\'s Inside AIS+</div>';
+    }
+
+    html += '</div></div>';
+  });
+
+  nav.innerHTML = html;
+}
+
+function toggleModule(mi) {
+  var group = document.querySelector('.module-group[data-module="' + mi + '"]');
+  group.classList.toggle('open');
+}
+
+function selectLesson(mi, li) {
+  currentModule = mi;
+  currentLesson = li;
+
+  document.querySelectorAll('.lesson-item').forEach(function(el) { el.classList.remove('active'); });
+  var item = document.querySelector('.lesson-item[data-module="' + mi + '"][data-lesson="' + li + '"]');
+  if (item) item.classList.add('active');
+
+  var mod = MODULES[mi];
+  var lesson = mod.lessons[li];
+  renderLesson(mod, lesson, li);
+}
+
+function renderLesson(mod, lesson, li) {
+  var main = document.getElementById('main-content');
+  var videoId = extractVideoId(lesson.youtube);
+
+  var html = '<div class="lesson-view">';
+  html += '<div class="lesson-breadcrumb">' + mod.name + ' <span>\u2192 ' + (lesson.isOverview ? 'Overview' : 'Lesson ' + li) + '</span></div>';
+  html += '<h1 class="lesson-title">' + lesson.title + '</h1>';
+
+  // Meta tags
+  html += '<div class="lesson-meta">';
+  html += '<span class="meta-tag id">' + lesson.id + '</span>';
+  if (lesson.level) html += '<span class="meta-tag level">' + lesson.level + '</span>';
+  if (lesson.comingSoon) html += '<span class="meta-tag coming-soon">COMING SOON</span>';
+  if (lesson.youtube || lesson.videoType === 'loom') html += '<span class="meta-tag video">\u25B6 Video</span>';
+  if (lesson.hasTemplate) html += '<span class="meta-tag template">\u2B07 Template</span>';
+  if (lesson.hasGuide) html += '<span class="meta-tag guide">\uD83D\uDCC4 Guide</span>';
+  html += '</div>';
+
+  // Reward banner for challenge lessons
+  if (mod.hasReward && lesson.isOverview) {
+    html += '<div class="reward-banner">';
+    html += '<div class="reward-icon">\uD83C\uDFC6</div>';
+    html += '<div class="reward-text">';
+    html += '<div class="reward-title">Challenge Rewards</div>';
+    html += '<div class="reward-desc">Complete all 7 days to unlock exclusive rewards. Download the Progress Tracker to track your completion.</div>';
+    html += '</div>';
+    html += '</div>';
+  }
+
+  // Video
+  if (!lesson.isOverview || lesson.youtube) {
+    html += '<div class="video-container">';
+    if (videoId) {
+      html += '<a class="video-thumb" href="https://www.youtube.com/watch?v=' + videoId + '" target="_blank" rel="noopener">';
+      html += '<img src="https://img.youtube.com/vi/' + videoId + '/maxresdefault.jpg" alt="' + lesson.title + '" onerror="this.src=\'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg\'">';
+      html += '<div class="play-btn"></div>';
+      html += '</a>';
+    } else if (lesson.comingSoon) {
+      html += '<div class="video-placeholder"><div class="play-icon">\u25B6</div><span>Coming Soon</span></div>';
+    } else {
+      html += '<div class="video-placeholder"><div class="play-icon">\u25B6</div><span>' + (lesson.videoType === 'loom' ? 'Loom video (embedded in Skool post)' : 'Video available on Skool') + '</span></div>';
+    }
+    html += '</div>';
+  }
+
+  // Tools
+  if (lesson.tools) {
+    html += '<div class="callout"><p><strong>Tools used:</strong> ' + lesson.tools + '</p></div>';
+  }
+
+  // Summary
+  if (lesson.summary) {
+    html += '<div class="content-section"><h2><span class="section-icon">\uD83D\uDCDD</span> Summary</h2>' + lesson.summary + '</div>';
+  }
+
+  // Takeaways
+  if (lesson.takeaways && lesson.takeaways.length) {
+    html += '<div class="content-section takeaways"><h2><span class="section-icon">\u2726</span> Key Takeaways</h2><ul>';
+    lesson.takeaways.forEach(function(t) { html += '<li>' + t + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  // Action steps
+  if (lesson.actions && lesson.actions.length) {
+    html += '<div class="content-section actions"><h2><span class="section-icon">\u2611</span> Action Steps</h2><ul>';
+    lesson.actions.forEach(function(a) { html += '<li>' + a + '</li>'; });
+    html += '</ul></div>';
+  }
+
+  // Resources
+  if (lesson.resources && lesson.resources.length) {
+    html += '<div class="content-section"><h2><span class="section-icon">\uD83D\uDCE6</span> Resources</h2>';
+    html += '<div class="resource-cards">';
+    lesson.resources.forEach(function(r) {
+      html += '<div class="resource-card"><div class="rc-icon">' + (r.type === 'guide' ? '\uD83D\uDCC4' : '\u2B07') + '</div><div class="rc-label">' + (r.type === 'guide' ? 'PDF Guide' : 'Template') + '</div><div class="rc-name">' + r.name + '</div></div>';
+    });
+    if (lesson.hasTemplate) {
+      html += '<div class="resource-card"><div class="rc-icon">\u2B07</div><div class="rc-label">n8n Template</div><div class="rc-name">' + lesson.title + ' \u2014 JSON</div></div>';
+    }
+    if (lesson.hasGuide && !lesson.resources.some(function(r) { return r.type === 'guide'; })) {
+      html += '<div class="resource-card"><div class="rc-icon">\uD83D\uDCC4</div><div class="rc-label">PDF Guide</div><div class="rc-name">' + lesson.title + ' \u2014 Guide</div></div>';
+    }
+    html += '</div></div>';
+  } else if (lesson.hasTemplate || lesson.hasGuide) {
+    html += '<div class="content-section"><h2><span class="section-icon">\uD83D\uDCE6</span> Resources</h2>';
+    html += '<div class="resource-cards">';
+    if (lesson.hasTemplate) {
+      html += '<div class="resource-card"><div class="rc-icon">\u2B07</div><div class="rc-label">n8n Template</div><div class="rc-name">' + lesson.title + ' \u2014 JSON</div></div>';
+    }
+    if (lesson.hasGuide) {
+      html += '<div class="resource-card"><div class="rc-icon">\uD83D\uDCC4</div><div class="rc-label">PDF Guide</div><div class="rc-name">' + lesson.title + ' \u2014 Guide</div></div>';
+    }
+    html += '</div></div>';
+  }
+
+  // Social proof
+  if (lesson.proof) {
+    html += '<div class="callout proof"><p><strong>Community proof:</strong> ' + lesson.proof + '</p></div>';
+  }
+
+  // Next step
+  if (lesson.nextStep) {
+    html += '<div class="next-step-card" onclick="goNext(' + currentModule + ', ' + li + ')">';
+    html += '<div class="next-label">Next Step</div>';
+    html += '<div class="next-title">' + lesson.nextStep + '</div>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+  main.innerHTML = html;
+  main.scrollTop = 0;
+}
+
+function goNext(mi, li) {
+  var mod = MODULES[mi];
+  if (mod.lessons && li + 1 < mod.lessons.length) {
+    selectLesson(mi, li + 1);
+  } else if (mi + 1 < MODULES.length && MODULES[mi+1].lessons) {
+    var nextGroup = document.querySelector('.module-group[data-module="' + (mi+1) + '"]');
+    if (nextGroup && !nextGroup.classList.contains('open')) nextGroup.classList.add('open');
+    selectLesson(mi + 1, 0);
+  }
+}
+
+function selectCategory(mi, ci) {
+  var mod = MODULES[mi];
+  var cat = mod.categories[ci];
+  var main = document.getElementById('main-content');
+
+  var html = '<div class="lesson-view">';
+  html += '<div class="lesson-breadcrumb">' + mod.name + ' <span>\u2192 ' + cat.name + '</span></div>';
+  html += '<h1 class="lesson-title">' + cat.name + '</h1>';
+  html += '<p style="color:var(--text-muted);margin-bottom:32px;font-size:15px">' + cat.templates.length + ' templates available. Click any template to watch the video tutorial and download the workflow.</p>';
+
+  html += '<div class="template-grid">';
+  cat.templates.forEach(function(t) {
+    var vid = extractVideoId(t.youtube);
+    html += '<div class="template-card" onclick="openTemplate(\'' + t.id + '\',\'' + encodeURIComponent(t.title) + '\',\'' + t.level + '\',\'' + (vid || '') + '\',\'' + mi + '\',\'' + ci + '\')">';
+    html += '<div class="tc-id">' + t.id + '</div>';
+    html += '<div class="tc-name">' + t.title + '</div>';
+    html += '<div class="tc-level">' + t.level + '</div>';
+    html += '</div>';
+  });
+  html += '</div></div>';
+
+  main.innerHTML = html;
+  main.scrollTop = 0;
+}
+
+function openTemplate(id, titleEnc, level, videoId, mi, ci) {
+  var title = decodeURIComponent(titleEnc);
+  var main = document.getElementById('main-content');
+  var mod = MODULES[mi];
+  var cat = mod.categories[ci];
+
+  var html = '<div class="lesson-view">';
+  html += '<div class="lesson-breadcrumb">' + mod.name + ' \u2192 ' + cat.name + ' <span>\u2192 ' + id + '</span></div>';
+  html += '<h1 class="lesson-title">' + title + '</h1>';
+  html += '<div class="lesson-meta">';
+  html += '<span class="meta-tag id">' + id + '</span>';
+  html += '<span class="meta-tag level">' + level + '</span>';
+  html += '<span class="meta-tag video">\u25B6 Video</span>';
+  html += '<span class="meta-tag template">\u2B07 Template</span>';
+  html += '</div>';
+
+  html += '<div class="video-container">';
+  if (videoId) {
+    html += '<a class="video-thumb" href="https://www.youtube.com/watch?v=' + videoId + '" target="_blank" rel="noopener">';
+    html += '<img src="https://img.youtube.com/vi/' + videoId + '/maxresdefault.jpg" alt="' + title + '" onerror="this.src=\'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg\'">';
+    html += '<div class="play-btn"></div>';
+    html += '</a>';
+  } else {
+    html += '<div class="video-placeholder"><div class="play-icon">\u25B6</div><span>Video available on Skool</span></div>';
+  }
+  html += '</div>';
+
+  html += '<div class="content-section"><h2><span class="section-icon">\uD83D\uDCE6</span> Resources</h2>';
+  html += '<div class="resource-cards">';
+  html += '<div class="resource-card"><div class="rc-icon">\u2B07</div><div class="rc-label">n8n Template</div><div class="rc-name">' + title + ' \u2014 JSON</div></div>';
+  html += '</div></div>';
+
+  html += '<div class="next-step-card" onclick="selectCategory(' + mi + ',' + ci + ')">';
+  html += '<div class="next-label">Back</div>';
+  html += '<div class="next-title">\u2190 Back to ' + cat.name + '</div>';
+  html += '</div>';
+
+  html += '</div>';
+  main.innerHTML = html;
+  main.scrollTop = 0;
+}
+
+function navigateToModule(mi) {
+  var group = document.querySelector('.module-group[data-module="' + mi + '"]');
+  if (group && !group.classList.contains('open')) group.classList.add('open');
+  var mod = MODULES[mi];
+  if (mod.isSpecial === 'success-stories') {
+    selectSpecial(mi, 'stories');
+  } else if (mod.isSpecial) {
+    selectSpecial(mi, mod.isSpecial);
+  } else if (mod.lessons) {
+    selectLesson(mi, 0);
+  }
+}
+
+function selectSpecial(mi, section) {
+  var mod = MODULES[mi];
+  var main = document.getElementById('main-content');
+
+  if (mod.isSpecial === 'upsell') {
+    var c = mod.content;
+    var html = '<div class="lesson-view" style="text-align:center;padding-top:60px">';
+    html += '<div style="display:inline-block;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px">Paid Membership</div>';
+    html += '<div style="font-size:48px;margin-bottom:16px">\u2B50</div>';
+    html += '<h1 class="lesson-title">' + c.title + '</h1>';
+    html += '<p style="color:var(--text-muted);font-size:16px;max-width:600px;margin:0 auto 32px;line-height:1.7">' + c.description + '</p>';
+
+    html += '<div style="text-align:left;max-width:500px;margin:0 auto">';
+    html += '<div class="content-section takeaways"><h2><span class="section-icon">\u2726</span> What\'s Included</h2><ul>';
+    c.features.forEach(function(f) { html += '<li>' + f + '</li>'; });
+    html += '</ul></div></div>';
+
+    // Link to success stories module
+    var storiesIdx = MODULES.findIndex(function(m) { return m.id === 'success-stories'; });
+    if (storiesIdx !== -1) {
+      html += '<div style="max-width:500px;margin:24px auto 0">';
+      html += '<div class="next-step-card" onclick="navigateToModule(' + storiesIdx + ')" style="margin-top:0">';
+      html += '<div class="next-label">Proof It Works</div>';
+      html += '<div class="next-title">\uD83C\uDFC6 See Member Success Stories \u2192</div>';
+      html += '</div>';
+      html += '</div>';
+    }
+
+    html += '<div style="margin-top:32px;padding:20px;background:linear-gradient(135deg,#2d1a2a,#1a1a2e);border:1px solid rgba(167,139,250,0.3);border-radius:12px;display:inline-block;cursor:pointer">';
+    html += '<div style="font-size:14px;font-weight:700;color:var(--purple)">Join AIS+ \u2192</div>';
+    html += '</div>';
+    html += '</div>';
+    main.innerHTML = html;
+    main.scrollTop = 0;
+    return;
+  }
+
+  if (mod.isSpecial === 'skills') {
+    var html = '<div class="lesson-view">';
+    html += '<div class="lesson-breadcrumb">' + mod.name + '</div>';
+    html += '<h1 class="lesson-title">Claude Code Skills Library</h1>';
+    html += '<p style="color:var(--text-muted);margin-bottom:32px;font-size:15px">Download pre-built Claude Code skills \u2014 prompt templates you can copy into your .claude/skills directory.</p>';
+    html += '<div class="template-grid">';
+    mod.skills.forEach(function(s) {
+      html += '<div class="template-card">';
+      html += '<div style="font-size:24px;margin-bottom:8px">\uD83E\uDDE0</div>';
+      html += '<div class="tc-id">' + s.id + '</div>';
+      html += '<div class="tc-name">' + s.title + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted);margin:6px 0 10px;line-height:1.5">' + s.description + '</div>';
+      html += '<div style="display:flex;align-items:center;justify-content:space-between">';
+      html += '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;background:rgba(79,143,255,0.12);color:var(--accent);text-transform:uppercase;letter-spacing:0.5px">' + s.category + '</span>';
+      html += '<span style="font-size:12px;font-weight:600;color:var(--accent);cursor:pointer">\u2B07 Download Skill</span>';
+      html += '</div>';
+      html += '</div>';
+    });
+    html += '</div></div>';
+    main.innerHTML = html;
+    main.scrollTop = 0;
+    return;
+  }
+
+  if (mod.isSpecial === 'podcast') {
+    var html = '<div class="lesson-view">';
+    html += '<div class="lesson-breadcrumb">' + mod.name + '</div>';
+    html += '<h1 class="lesson-title">Nate Herk Podcast</h1>';
+    html += '<p style="color:var(--text-muted);margin-bottom:32px;font-size:15px">Episodes on AI automation, building businesses, and the future of work.</p>';
+    mod.episodes.forEach(function(ep) {
+      if (ep.date === null) {
+        // Coming soon placeholder
+        html += '<div class="template-card" style="text-align:center;padding:32px">';
+        html += '<div style="font-size:48px;margin-bottom:16px;opacity:0.4">\uD83C\uDFA7</div>';
+        html += '<div class="tc-name" style="font-size:18px;margin-bottom:8px">Coming Soon</div>';
+        html += '<div style="font-size:13px;color:var(--text-muted);line-height:1.6">' + ep.description + '</div>';
+        html += '</div>';
+      } else {
+        html += '<div class="template-card" style="margin-bottom:8px">';
+        html += '<div class="tc-id">' + ep.id + ' \u2014 ' + ep.date + '</div>';
+        html += '<div class="tc-name">' + ep.title + '</div>';
+        html += '<div style="font-size:12px;color:var(--text-muted);margin-top:4px">' + ep.description + '</div>';
+        html += '</div>';
+      }
+    });
+    html += '</div>';
+    main.innerHTML = html;
+    main.scrollTop = 0;
+    return;
+  }
+
+  if (mod.isSpecial === 'discounts') {
+    var html = '<div class="lesson-view">';
+    html += '<div class="lesson-breadcrumb">' + mod.name + '</div>';
+    html += '<h1 class="lesson-title">Partner Discount Codes</h1>';
+    html += '<p style="color:var(--text-muted);margin-bottom:32px;font-size:15px">Exclusive discounts on tools used throughout the curriculum.</p>';
+    html += '<div class="template-grid">';
+    mod.discounts.forEach(function(d) {
+      html += '<div class="template-card" onclick="window.open(\'' + d.url + '\', \'_blank\')">';
+      html += '<div class="tc-id">' + d.id + '</div>';
+      html += '<div class="tc-name">' + d.title + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted);margin:4px 0 10px">' + d.desc + '</div>';
+      html += '<div style="font-size:12px;font-weight:600;color:var(--accent)">Get Discount \u2192</div>';
+      html += '</div>';
+    });
+    html += '</div></div>';
+    main.innerHTML = html;
+    main.scrollTop = 0;
+    return;
+  }
+
+  if (mod.isSpecial === 'success-stories') {
+    var html = '<div class="lesson-view">';
+    html += '<div class="lesson-breadcrumb">' + mod.name + '</div>';
+    html += '<h1 class="lesson-title">AIS+ Success Stories</h1>';
+    html += '<p style="color:var(--text-muted);margin-bottom:32px;font-size:15px">Real members. Real results. These builders were exactly where you are now.</p>';
+    html += '<div class="template-grid">';
+    mod.stories.forEach(function(s) {
+      html += '<div class="template-card" onclick="window.open(\'' + s.skoolUrl + '\', \'_blank\')">';
+      html += '<div style="font-size:28px;font-weight:800;color:var(--green);margin-bottom:8px">' + s.amount + '</div>';
+      html += '<div class="tc-name">' + s.title + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted);margin:6px 0 10px;line-height:1.5">' + s.desc + '</div>';
+      html += '<div style="font-size:12px;font-weight:600;color:var(--accent)">Watch Story \u2192</div>';
+      html += '</div>';
+    });
+    html += '</div></div>';
+    main.innerHTML = html;
+    main.scrollTop = 0;
+    return;
+  }
+
+  // Discussions (refactored community)
+  var html = '<div class="lesson-view">';
+  html += '<div class="lesson-breadcrumb">' + mod.name + '</div>';
+
+  if (section === 'discussions') {
+    html += '<h1 class="lesson-title">Community Discussions</h1>';
+    html += '<p style="color:var(--text-muted);margin-bottom:24px">Engage with the community. Share your thoughts, learn from others.</p>';
+    mod.discussions.forEach(function(d) {
+      html += '<div class="template-card" style="margin-bottom:8px"><div class="tc-id">' + d.id + '</div><div class="tc-name">' + d.title + '</div></div>';
+    });
+  }
+
+  html += '</div>';
+  main.innerHTML = html;
+  main.scrollTop = 0;
+}
+
+function renderWelcome() {
+  var main = document.getElementById('main-content');
+  var totalTemplates = 0;
+  MODULES.forEach(function(m) { if (m.isLibrary) m.categories.forEach(function(c) { totalTemplates += c.templates.length; }); });
+
+  var totalLessons = 0;
+  MODULES.forEach(function(m) { if (m.lessons) totalLessons += m.lessons.length; });
+
+  var html = '<div class="welcome-view">';
+  html += '<h1>AI Automation Society</h1>';
+  html += '<div class="welcome-sub">Your structured path from zero to building and selling AI automations with Claude Code. Start with the fundamentals, build real projects in the 7-Day Challenge, then go deeper with mastery modules and templates.</div>';
+
+  html += '<div class="stat-grid">';
+  html += '<div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Modules</div></div>';
+  html += '<div class="stat-card"><div class="stat-num">' + totalLessons + '</div><div class="stat-label">Lessons</div></div>';
+  html += '<div class="stat-card"><div class="stat-num">' + totalTemplates + '</div><div class="stat-label">Templates</div></div>';
+  html += '<div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Day Challenge</div></div>';
+  html += '</div>';
+
+  html += '<div class="reward-banner" style="max-width:500px;margin:0 auto 40px">';
+  html += '<div class="reward-icon">\uD83C\uDFC6</div>';
+  html += '<div class="reward-text">';
+  html += '<div class="reward-title">7-Day Claude Code Builder Challenge</div>';
+  html += '<div class="reward-desc">Complete all 7 days to unlock exclusive rewards. Build real projects with Claude Code + n8n.</div>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '<div class="roadmap"><h2>Your Learning Path</h2>';
+
+  // Getting Started
+  var gettingStarted = MODULES.filter(function(m) { return m.section === 'getting-started'; });
+  html += '<div class="roadmap-phase"><h3>Getting Started</h3>';
+  var globalNum = 1;
+  gettingStarted.forEach(function(m) {
+    var count = m.lessons ? m.lessons.length : 0;
+    var idx = MODULES.indexOf(m);
+    html += '<div class="roadmap-item" onclick="toggleModule(' + idx + ')">';
+    html += '<div class="ri-num">' + globalNum + '</div>';
+    html += '<div class="ri-name">' + m.icon + ' ' + m.name + '</div>';
+    if (m.hasReward) html += '<span class="ri-badge" style="background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3)">\uD83C\uDFC6 Rewards</span>';
+    html += '<div class="ri-count">' + count + ' lessons</div>';
+    html += '</div>';
+    globalNum++;
+  });
+  html += '</div>';
+
+  // Core Curriculum
+  var coreCurriculum = MODULES.filter(function(m) { return m.section === 'core-curriculum'; });
+  html += '<div class="roadmap-phase"><h3>Core Curriculum</h3>';
+  coreCurriculum.forEach(function(m) {
+    var count = m.lessons ? m.lessons.length : m.isSpecial === 'skills' ? m.skills.length : 0;
+    var label = m.lessons ? 'lessons' : 'skills';
+    var idx = MODULES.indexOf(m);
+    html += '<div class="roadmap-item" onclick="toggleModule(' + idx + ')">';
+    html += '<div class="ri-num">' + globalNum + '</div>';
+    html += '<div class="ri-name">' + m.icon + ' ' + m.name + '</div>';
+    if (m.hasReward) html += '<span class="ri-badge" style="background:rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.3)">\uD83C\uDFC6 Rewards</span>';
+    html += '<div class="ri-count">' + count + ' ' + label + '</div>';
+    html += '</div>';
+    globalNum++;
+  });
+  html += '</div>';
+
+  // Library & Resources
+  var libraryResources = MODULES.filter(function(m) { return m.section === 'library-resources'; });
+  html += '<div class="roadmap-phase"><h3>Library & Resources</h3>';
+  libraryResources.forEach(function(m) {
+    var count = m.isLibrary ? totalTemplates : m.isSpecial === 'podcast' ? m.episodes.length : m.isSpecial === 'discounts' ? m.discounts.length : m.isSpecial === 'discussions' ? m.discussions.length : 0;
+    var label = m.isLibrary ? 'templates' : m.isSpecial === 'podcast' ? 'episodes' : m.isSpecial === 'discounts' ? 'codes' : m.isSpecial === 'discussions' ? 'discussions' : 'items';
+    var idx = MODULES.indexOf(m);
+    html += '<div class="roadmap-item" onclick="toggleModule(' + idx + ')">';
+    html += '<div class="ri-num">' + globalNum + '</div>';
+    html += '<div class="ri-name">' + m.icon + ' ' + m.name + '</div>';
+    html += '<div class="ri-count">' + count + ' ' + label + '</div>';
+    html += '</div>';
+    globalNum++;
+  });
+  html += '</div>';
+
+  // AIS+ Membership
+  var aisPlus = MODULES.filter(function(m) { return m.section === 'ais-plus'; });
+  html += '<div class="roadmap-phase"><h3>AIS+ Membership</h3>';
+  aisPlus.forEach(function(m) {
+    var count = m.isSpecial === 'success-stories' ? m.stories.length : 1;
+    var label = m.isSpecial === 'success-stories' ? 'stories' : 'items';
+    var idx = MODULES.indexOf(m);
+    html += '<div class="roadmap-item" onclick="toggleModule(' + idx + ')">';
+    html += '<div class="ri-num">' + globalNum + '</div>';
+    html += '<div class="ri-name">' + m.icon + ' ' + m.name + '</div>';
+    if (m.isPaid) html += '<span class="ri-badge" style="background:rgba(167,139,250,0.15);color:var(--purple);border:1px solid rgba(167,139,250,0.3)">PAID</span>';
+    html += '<div class="ri-count">' + count + ' ' + label + '</div>';
+    html += '</div>';
+    globalNum++;
+  });
+  html += '</div></div>';
+
+  html += '</div>';
+  main.innerHTML = html;
+}
+
+// =====================================================
+// INIT
+// =====================================================
+
+renderSidebar();
+renderWelcome();
+</script>
+
+</body>
+</html>
